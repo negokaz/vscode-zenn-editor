@@ -1,7 +1,7 @@
 {
 	"name": "zenn-editor",
-	"displayName": "zenn-editor",
-	"description": "A extension for zenn.dev",
+	"displayName": "Zenn Editor",
+	"description": "An unofficial extension integrates Zenn CLI into VS Code",
 	"version": "0.0.1",
 	"publisher": "negokaz",
 	"engines": {
@@ -10,10 +10,18 @@
 	"categories": [
 		"Other"
 	],
+    "keywords": [
+        "Markdown"
+    ],
+    "icon": "docs/images/icon.png",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/negokaz/vscode-zenn-editor.git"
 	},
+    "bugs": {
+        "url": "https://github.com/negokaz/vscode-zenn-editor/issues"
+    },
+    "homepage": "https://github.com/negokaz/vscode-zenn-editor",
 	"activationEvents": [
 		"onCommand:zenn-editor.preview"
 	],
