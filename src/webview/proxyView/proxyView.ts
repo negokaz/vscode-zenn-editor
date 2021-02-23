@@ -31,26 +31,42 @@ function activate(zenn: HTMLIFrameElement) {
 function watchZennWindow(zennWindow: Window) {
     zennWindow.addEventListener('unload', () => setTimeout(() => {
         // This block is called after unload
-        watchZennWindow(zennWindow);
         const observer =
             new MutationObserver(() => {
                 if (zennWindow.document.head && zennWindow.document.body) {
+                    watchZennWindow(zennWindow);
                     onLoadZennWindow(zennWindow);
+                    onChangeZennWindow(zennWindow);
                     observer.disconnect();
                 }
             });
         observer.observe(zennWindow.document, { childList: true, subtree: true });
     }, 0));
+    zennWindow.addEventListener('load', () => {
+        new MutationObserver(() => {
+            onChangeZennWindow(zennWindow);
+        }).observe(zennWindow.document, { childList: true, subtree: true });
+    });
 }
 
 /**
- * 子 iframe の読み込み後に複数回呼ばれる可能性があることに注意
+ * 子 iframe の読み込みが完了して描画される直前に呼ばれる。
+ * ページ遷移したときにも呼ばれる。
+ * 重複して呼ばれる可能性があることに注意。
  */
 function onLoadZennWindow(zennWindow: Window) {
     // hide sidebar
     const style = document.createElement('style');
     style.textContent = '.main-sidebar { display: none }';
     zennWindow.document.head.appendChild(style);
+}
+
+/**
+ * 子 iframe が変化したときに呼ばれる。
+ * ページ遷移したときにも呼ばれる。
+ * 重複して呼ばれる可能性があることに注意。
+ */
+function onChangeZennWindow(zennWindow: Window) {
     // handle <a> click event
     const listenerAddedMarkDataName = '__vscode_zenn_editor_handle_a_click_event';
     zennWindow.document.querySelectorAll('a').forEach(e => {
