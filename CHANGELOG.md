@@ -6,6 +6,10 @@ vscode-zenn-editor の注目すべき変更はこのファイルで文書化さ�
 
 ## [リリース予定]
 
-[リリース予定]: https://github.com/negokaz/vscode-zenn-editor/compare/0f49e52b...HEAD
+[リリース予定]: https://github.com/negokaz/vscode-zenn-editor/compare/v0.0.3...HEAD
+
+## [0.0.3] - 2021-02-23
+
+[0.0.3]: https://github.com/negokaz/vscode-zenn-editor/compare/v0.0.0...v0.0.3
 
 - 初回リリース🚀
