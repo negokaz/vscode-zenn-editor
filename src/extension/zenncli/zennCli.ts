@@ -23,6 +23,10 @@ export class ZennCli {
         for (let i = 0; i < paths.length; i++) {
             paths[i] = path.resolve(workingDirectory.fsPath, paths[i]);
         }
+        // additional paths
+        paths.unshift(
+            path.join(workingDirectory.fsPath, 'node_modules', '.bin'),
+        );
         return vscode.Uri.file(await which('zenn', { path: env.PATH }));
     }
 
