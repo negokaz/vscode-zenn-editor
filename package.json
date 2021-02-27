@@ -2,7 +2,7 @@
 	"name": "zenn-editor",
 	"displayName": "Zenn Editor",
 	"description": "An unofficial extension integrates Zenn CLI into VS Code",
-	"version": "0.1.0",
+	"version": "0.2.0",
 	"publisher": "negokaz",
 	"engines": {
 		"vscode": "^1.52.0"

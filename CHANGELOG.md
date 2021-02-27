@@ -6,7 +6,19 @@ vscode-zenn-editor の注目すべき変更はこのファイルで文書化さ�
 
 ## [リリース予定]
 
-[リリース予定]: https://github.com/negokaz/vscode-zenn-editor/compare/v0.1.0...HEAD
+[リリース予定]: https://github.com/negokaz/vscode-zenn-editor/compare/v0.2.0...HEAD
+
+## [0.2.0] - 2021-02-27
+
+[0.2.0]: https://github.com/negokaz/vscode-zenn-editor/compare/v0.1.0...v0.2.0
+
+### Added
+
+- `./node_modules/.bin` の zenn コマンドを環境変数 `PATH` の設定なしで認識する [PR#2](https://github.com/negokaz/vscode-zenn-editor/pull/2)
+
+### Fixed
+
+- リンクカードをクリックしてもページを開けない問題を修正 [PR#3](https://github.com/negokaz/vscode-zenn-editor/pull/3)
 
 ## [0.1.0] - 2021-02-23
 
