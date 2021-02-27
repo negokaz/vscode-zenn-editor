@@ -79,4 +79,30 @@ function onChangeZennWindow(zennWindow: Window) {
             e.dataset[listenerAddedMarkDataName] = 'true';
         }
     });
+    // handle link card click events
+    zennWindow.document.querySelectorAll<HTMLIFrameElement>('.embed-zenn-link > iframe').forEach(e => {
+        const iframeSrc = new window.URL(e.src);
+        const urlParam = iframeSrc.searchParams.get('url');
+        if (urlParam && !e.dataset[listenerAddedMarkDataName]) {
+            const linkUrl = decodeURIComponent(urlParam);
+            // How to detect a click event on a cross domain iframe
+            // https://gist.github.com/jaydson/1780598
+            let iframeMouseOver = false;
+            zennWindow.addEventListener('blur', () => {
+                if (iframeMouseOver) {
+                    iframeMouseOver = false;
+                    window.parent.postMessage({ source: 'proxy', command: 'open-link', link: linkUrl }, '*');
+                }
+            });
+            e.addEventListener('mouseover', () => {
+                // blur イベントを確実に起こすためフォーカスを移しておく
+                zennWindow.focus();
+                iframeMouseOver = true;
+            });
+            e.addEventListener('mouseout', () => {
+                iframeMouseOver = false;
+            });
+            e.dataset[listenerAddedMarkDataName] = 'true';
+        }
+    });
 }
