@@ -6,7 +6,15 @@ vscode-zenn-editor の注目すべき変更はこのファイルで文書化さ�
 
 ## [リリース予定]
 
+### Added
+
 [リリース予定]: https://github.com/negokaz/vscode-zenn-editor/compare/v0.2.0...HEAD
+
+- ステータスバーに画像アップロードページへのリンクが表示されるようになりました [PR#5](https://github.com/negokaz/vscode-zenn-editor/pull/5)
+
+    ![](docs/images/CHANGELOG/status-bar-upload-image.png)
+
+    Zenn Editor のプレビューが開いている時にだけ表示されます
 
 ## [0.2.0] - 2021-02-27
 
