@@ -5,10 +5,12 @@ vscode-zenn-editor の注目すべき変更はこのファイルで文書化さ�
 このファイルの書き方に関する推奨事項については、[Keep a Changelog](http://keepachangelog.com/) を確認してください。
 
 ## [リリース予定]
+[リリース予定]: https://github.com/negokaz/vscode-zenn-editor/compare/v0.3.0...HEAD
+
+## [0.3.0] - 2021-02-28
+[0.3.0]: https://github.com/negokaz/vscode-zenn-editor/compare/v0.2.0...v0.3.0
 
 ### Added
-
-[リリース予定]: https://github.com/negokaz/vscode-zenn-editor/compare/v0.2.0...HEAD
 
 - ステータスバーに画像アップロードページへのリンクが表示されるようになりました [PR#5](https://github.com/negokaz/vscode-zenn-editor/pull/5)
 
