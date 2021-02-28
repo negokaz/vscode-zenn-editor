@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import ImageUploaderItem from '../statusBar/imageUploaderItem';
 import PreviewView from './previewView';
 
 export default class PreviewViewManager {
@@ -6,6 +7,8 @@ export default class PreviewViewManager {
     public static create(): PreviewViewManager {
         return new PreviewViewManager();
     }
+
+    private imageUploaderStatusbarItem = ImageUploaderItem.create();
 
     private previewView: PreviewView | undefined;
 
@@ -18,7 +21,9 @@ export default class PreviewViewManager {
             this.previewView = await PreviewView.open(uri, context);
             this.previewView.onDidClose(() => {
                 this.previewView = undefined;
+                this.imageUploaderStatusbarItem.hide();
             });
+            this.imageUploaderStatusbarItem.show();
         }
     }
 }

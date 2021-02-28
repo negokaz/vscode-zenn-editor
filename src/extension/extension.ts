@@ -9,6 +9,7 @@ import PreviewViewManager from './preview/previewViewManager';
 export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(
 		vscode.commands.registerCommand('zenn-editor.preview', previewDocument(context)),
+        vscode.commands.registerCommand('zenn-editor.open-image-uploader', openImageUploader()),
 	);
 	console.log('zenn-editor is now active');
 }
@@ -24,4 +25,10 @@ function previewDocument(context: vscode.ExtensionContext) {
 		    previewViewManager.openPreview(uri, context);
         }
 	};
+}
+
+function openImageUploader() {
+    return () => {
+        vscode.env.openExternal(vscode.Uri.parse('https://zenn.dev/dashboard/uploader'));
+    };
 }
