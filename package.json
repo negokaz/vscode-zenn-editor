@@ -23,7 +23,8 @@
     },
     "homepage": "https://github.com/negokaz/vscode-zenn-editor",
 	"activationEvents": [
-		"onCommand:zenn-editor.preview"
+		"workspaceContains:/articles/",
+		"workspaceContains:/books/"
 	],
 	"main": "./dist/extension.js",
 	"contributes": {
@@ -41,20 +42,20 @@
 			"commandPalette": [
 				{
 					"command": "zenn-editor.preview",
-					"when": "editorLangId == markdown"
+					"when": "zenn-editor.activated && editorLangId == markdown"
 				}
 			],
 			"editor/title": [
 				{
 					"command": "zenn-editor.preview",
-					"when": "resourceLangId == markdown",
+					"when": "zenn-editor.activated && resourceLangId == markdown",
 					"group": "navigation"
 				}
 			],
 			"editor/title/context": [
 				{
 					"command": "zenn-editor.preview",
-					"when": "resourceLangId == markdown",
+					"when": "zenn-editor.activated && resourceLangId == markdown",
 					"group": "navigation"
 				}
 			]
