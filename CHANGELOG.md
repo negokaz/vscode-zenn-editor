@@ -7,6 +7,16 @@ vscode-zenn-editor の注目すべき変更はこのファイルで文書化さ�
 ## [リリース予定]
 [リリース予定]: https://github.com/negokaz/vscode-zenn-editor/compare/v0.3.0...HEAD
 
+### Added
+
+- article と book の一覧を Explorer で確認できるようになりました [PR#7](https://github.com/negokaz/vscode-zenn-editor/pull/7)
+
+    一覧はファイル名ではなくコンテンツのタイトルで表示されます。  
+    また、公開/非公開の状態や本のセクションの有料/無料をアイコンで確認できます
+
+    ![](docs/images/CHANGELOG/tree-view.png)
+
+
 ## [0.3.0] - 2021-02-28
 [0.3.0]: https://github.com/negokaz/vscode-zenn-editor/compare/v0.2.0...v0.3.0
 
