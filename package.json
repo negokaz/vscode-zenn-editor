@@ -10,18 +10,18 @@
 	"categories": [
 		"Other"
 	],
-    "keywords": [
-        "Markdown"
-    ],
-    "icon": "docs/images/icon.png",
+	"keywords": [
+		"Markdown"
+	],
+	"icon": "docs/images/icon.png",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/negokaz/vscode-zenn-editor.git"
 	},
-    "bugs": {
-        "url": "https://github.com/negokaz/vscode-zenn-editor/issues"
-    },
-    "homepage": "https://github.com/negokaz/vscode-zenn-editor",
+	"bugs": {
+		"url": "https://github.com/negokaz/vscode-zenn-editor/issues"
+	},
+	"homepage": "https://github.com/negokaz/vscode-zenn-editor",
 	"activationEvents": [
 		"workspaceContains:/articles/",
 		"workspaceContains:/books/"
@@ -36,7 +36,16 @@
 					"light": "./media/icon/preview-light.svg",
 					"dark": "./media/icon/preview-dark.svg"
 				}
-			}
+			},
+            {
+                "command": "zenn-editor.refresh-tree-view",
+                "title": "Zenn Editor: Refresh Tree View",
+                "icon": "$(refresh)"
+            },
+            {
+                "command": "zenn-editor.open-tree-view-item",
+                "title": "Zenn Editor: Open Tree View Item"
+            }
 		],
 		"menus": {
 			"commandPalette": [
@@ -58,6 +67,22 @@
 					"when": "zenn-editor.activated && resourceLangId == markdown",
 					"group": "navigation"
 				}
+			],
+            "view/title": [
+                {
+                    "command": "zenn-editor.refresh-tree-view",
+                    "when": "zenn-editor.activated && view == zenn",
+                    "group": "navigation"
+                }
+            ]
+		},
+		"views": {
+			"explorer": [
+				{
+					"id": "zenn",
+					"name": "Zenn Contents",
+                    "when": "zenn-editor.activated"
+				}
 			]
 		}
 	},
@@ -71,8 +96,8 @@
 		"pretest": "yarn run test-compile && yarn run lint",
 		"lint": "eslint src --ext ts",
 		"test": "node ./out/test/runTest.js",
-        "vsce:package": "vsce package --githubBranch main",
-        "vsce:publish": "vsce publish --githubBranch main"
+		"vsce:package": "vsce package --githubBranch main",
+		"vsce:publish": "vsce publish --githubBranch main"
 	},
 	"devDependencies": {
 		"@types/glob": "^7.1.3",
@@ -102,6 +127,7 @@
 		"http-proxy": "^1.18.1",
 		"path-array": "^1.0.1",
 		"ps-tree": "^1.2.0",
-		"which": "^2.0.2"
+		"which": "^2.0.2",
+		"yaml": "^1.10.2"
 	}
 }
