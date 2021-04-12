@@ -73,6 +73,7 @@ class Book extends ZennTreeItem {
         this.chapters = chapters;
         this.lastModifiedTime = lastModifiedTime;
         this.resources = resources;
+        this.tooltip = uri.basename();
         this.resourceUri = uri.underlying;
         this.iconPath =
             published
@@ -147,6 +148,7 @@ class BookSection extends ZennTreeItem {
         super(`📄 ${title}`, vscode.TreeItemCollapsibleState.None);
         this.uri = uri;
         this.sectionNo = BookSection.extractSectionNo(uri);
+        this.tooltip = uri.basename();
         this.command = new OpenZennTreeViewItemCommand(this.uri);
         this.resourceUri = uri.underlying;
         this.iconPath =
@@ -184,6 +186,7 @@ class BookConfig extends ZennTreeItem {
     private constructor(uri: Uri) {
         super(uri.basename(), vscode.TreeItemCollapsibleState.None);
         this.uri = uri;
+        this.tooltip = uri.basename();
         this.command = new OpenZennTreeViewItemCommand(this.uri);
         this.resourceUri = this.uri.underlying;
     }
@@ -200,6 +203,7 @@ class BookCover extends ZennTreeItem {
     private constructor(uri: Uri) {
         super(uri.basename(), vscode.TreeItemCollapsibleState.None);
         this.uri = uri;
+        this.tooltip = uri.basename();
         this.command = new OpenZennTreeViewItemCommand(this.uri);
         this.resourceUri = this.uri.underlying;
     }

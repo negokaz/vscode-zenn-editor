@@ -55,7 +55,7 @@ class Article extends ZennTreeItem {
         this.uri = uri;
         this.published = published;
         this.lastModifiedTime = lastModifiedTime;
-        this.tooltip = path.basename(this.uri.fsPath());
+        this.tooltip = uri.basename();
         this.command = new OpenZennTreeViewItemCommand(this.uri);
         this.resourceUri = uri.underlying;
         this.iconPath =
