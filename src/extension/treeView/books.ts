@@ -18,6 +18,7 @@ export class Books extends ZennTreeItem {
         super("📚 books", vscode.TreeItemCollapsibleState.Expanded);
         this.uri = uri;
         this.resources = resources;
+        this.resourceUri = uri.underlying;
     }
 
     async children(): Promise<ZennTreeItem[]> {
@@ -72,6 +73,7 @@ class Book extends ZennTreeItem {
         this.chapters = chapters;
         this.lastModifiedTime = lastModifiedTime;
         this.resources = resources;
+        this.resourceUri = uri.underlying;
         this.iconPath =
             published
                 ? resources.uri('media', 'icon', 'published.svg').fsPath
@@ -146,6 +148,7 @@ class BookSection extends ZennTreeItem {
         this.uri = uri;
         this.sectionNo = BookSection.extractSectionNo(uri);
         this.command = new OpenZennTreeViewItemCommand(this.uri);
+        this.resourceUri = uri.underlying;
         this.iconPath =
             free
                 ? resources.uri('media', 'icon', 'unlock.svg').fsPath

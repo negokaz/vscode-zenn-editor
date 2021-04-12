@@ -17,6 +17,7 @@ export class Articles extends ZennTreeItem {
         super("🗂️ articles", vscode.TreeItemCollapsibleState.Expanded);
         this.uri = uri;
         this.resources = resources;
+        this.resourceUri = uri.underlying;
     }
 
     async children(): Promise<ZennTreeItem[]> {
@@ -56,6 +57,7 @@ class Article extends ZennTreeItem {
         this.lastModifiedTime = lastModifiedTime;
         this.tooltip = path.basename(this.uri.fsPath());
         this.command = new OpenZennTreeViewItemCommand(this.uri);
+        this.resourceUri = uri.underlying;
         this.iconPath =
             published
                 ? resources.uri('media', 'icon', 'published.svg').fsPath
