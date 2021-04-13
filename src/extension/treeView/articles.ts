@@ -14,7 +14,7 @@ export class Articles extends ZennTreeItem {
     private readonly resources: ExtensionResource;
 
     constructor(uri: Uri, resources: ExtensionResource) {
-        super("🗂️ articles", vscode.TreeItemCollapsibleState.Expanded);
+        super("articles", vscode.TreeItemCollapsibleState.Expanded);
         this.uri = uri;
         this.resources = resources;
         this.resourceUri = uri.underlying;
