@@ -6,6 +6,7 @@
 
 ## Features
 
+- 投稿コンテンツの一覧を VS Code 上で確認できます
 - 編集中の `articles` か `books` を VS Code 上でプレビューできます
 
 ## Requirements
