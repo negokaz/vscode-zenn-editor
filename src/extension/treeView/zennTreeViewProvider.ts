@@ -5,6 +5,7 @@ import Uri from '../util/uri';
 import { Books } from './books';
 import { Articles } from './articles';
 import { ZennTreeItem } from './zennTreeItem';
+import { ZennWorkspace } from '../util/zennWorkspace';
 
 // [Tree View API | Visual Studio Code Extension API](https://code.visualstudio.com/api/extension-guides/tree-view)
 export class ZennTreeViewProvider implements vscode.TreeDataProvider<ZennTreeItem> {
@@ -35,26 +36,15 @@ export class ZennTreeViewProvider implements vscode.TreeDataProvider<ZennTreeIte
             return element.children();
         } else {
             // root items
-            if (vscode.workspace.workspaceFolders) {
-                for (var folder of vscode.workspace.workspaceFolders) {
-                    const workspace = Uri.of(folder.uri);
-                    const articles = workspace.resolve('articles');
-                    const articlesStat = fs.stat(articles.fsPath());
-                    const books = workspace.resolve('books');
-                    const booksStat = fs.stat(books.fsPath());
-                    const items: ZennTreeItem[] = [];
-                    if ((await articlesStat).isDirectory()) {
-                        items.push(new Articles(articles, this.resources));
-                    }
-                    if ((await booksStat).isDirectory()) {
-                        items.push(new Books(books, this.resources));
-                    }
-                    if (items.length > 0) {
-                        return Promise.resolve(items);
-                    }
-                }
+            const workspace = await ZennWorkspace.findWorkspace();
+            const items: ZennTreeItem[] = [];
+            if (workspace.articlesDirectory) {
+                items.push(new Articles(workspace.articlesDirectory, this.resources));
             }
+            if (workspace.booksDirectory) {
+                items.push(new Books(workspace.booksDirectory, this.resources));
+            }
+            return Promise.resolve(items);
         }
-        return Promise.resolve([]);
     }
 }

@@ -28,4 +28,8 @@ export default class Uri {
     public resolve(...pathSegments: string[]): Uri {
         return Uri.file(path.resolve.apply(null, [this.underlying.fsPath].concat(pathSegments)));
     }
+
+    public parentDirectory(): Uri {
+        return Uri.file(path.dirname(this.fsPath()));
+    }
 }

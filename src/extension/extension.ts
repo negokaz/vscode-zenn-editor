@@ -5,7 +5,7 @@ import PreviewViewManager from './preview/previewViewManager';
 import { ZennTreeViewProvider } from './treeView/zennTreeViewProvider';
 import ExtensionResource from './resource/extensionResource';
 import { ZennCli } from './zenncli/zennCli';
-
+import { ZennWorkspace } from './util/zennWorkspace';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -40,32 +40,28 @@ function previewDocument(context: vscode.ExtensionContext) {
 
 function createNewArticle() {
     return async () => {
-        if(vscode.workspace.workspaceFolders) {
-                const workspace = vscode.workspace.workspaceFolders[0];
-                const cli = await ZennCli.create(workspace.uri);
-                const newArticle = await cli.createNewArticle();
-            try {
-                const doc = await vscode.workspace.openTextDocument(newArticle.articleUri.underlying);
-                return await vscode.window.showTextDocument(doc, vscode.ViewColumn.One, false);
-            } catch (e) {
-                vscode.window.showErrorMessage(e.toString());
-            }
+        const workspace = await ZennWorkspace.findWorkspace();
+        const cli = await ZennCli.create(workspace.rootDirectory.underlying);
+        const newArticle = await cli.createNewArticle();
+        try {
+            const doc = await vscode.workspace.openTextDocument(newArticle.articleUri.underlying);
+            return await vscode.window.showTextDocument(doc, vscode.ViewColumn.One, false);
+        } catch (e) {
+            vscode.window.showErrorMessage(e.toString());
         }
     };
 }
 
 function createNewBook() {
     return async () => {
-        if (vscode.workspace.workspaceFolders) {
-            const workspace = vscode.workspace.workspaceFolders[0];
-            const cli = await ZennCli.create(workspace.uri);
-            const newBook = await cli.createNewBook();
-            try {
-                const doc = await vscode.workspace.openTextDocument(newBook.configUri.underlying);
-                return await vscode.window.showTextDocument(doc, vscode.ViewColumn.One, false);
-            } catch (e) {
-                vscode.window.showErrorMessage(e.toString());
-            }
+        const workspace = await ZennWorkspace.findWorkspace();
+        const cli = await ZennCli.create(workspace.rootDirectory.underlying);
+        const newBook = await cli.createNewBook();
+        try {
+            const doc = await vscode.workspace.openTextDocument(newBook.configUri.underlying);
+            return await vscode.window.showTextDocument(doc, vscode.ViewColumn.One, false);
+        } catch (e) {
+            vscode.window.showErrorMessage(e.toString());
         }
     }
 }
