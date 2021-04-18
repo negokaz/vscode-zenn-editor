@@ -4,6 +4,7 @@ import * as vscode from 'vscode';
 import PreviewViewManager from './preview/previewViewManager';
 import { ZennTreeViewProvider } from './treeView/zennTreeViewProvider';
 import ExtensionResource from './resource/extensionResource';
+import { ZennCli } from './zenncli/zennCli';
 
 
 // this method is called when your extension is activated
@@ -17,6 +18,7 @@ export function activate(context: vscode.ExtensionContext) {
         vscode.commands.registerCommand('zenn-editor.refresh-tree-view', () => zennViewProvider.refresh()),
         vscode.commands.registerCommand('zenn-editor.open-tree-view-item', openTreeViewItem()),
 		vscode.commands.registerCommand('zenn-editor.preview', previewDocument(context)),
+		vscode.commands.registerCommand('zenn-editor.create-new-article', createNewArticle()),
         vscode.commands.registerCommand('zenn-editor.open-image-uploader', openImageUploader()),
 	);
 	console.log('zenn-editor is now active');
@@ -33,6 +35,22 @@ function previewDocument(context: vscode.ExtensionContext) {
 		    previewViewManager.openPreview(uri, context);
         }
 	};
+}
+
+function createNewArticle() {
+    return async () => {
+        if(vscode.workspace.workspaceFolders) {
+                const workspace = vscode.workspace.workspaceFolders[0];
+                const cli = await ZennCli.create(workspace.uri);
+                const newArticle = await cli.createNewArticle();
+            try {
+                const doc = await vscode.workspace.openTextDocument(newArticle.articleUri.underlying);
+                return await vscode.window.showTextDocument(doc, vscode.ViewColumn.One, false);
+            } catch (e) {
+                vscode.window.showErrorMessage(e.toString());
+            }
+        }
+    };
 }
 
 function openImageUploader() {

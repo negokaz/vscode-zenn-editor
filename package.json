@@ -38,6 +38,11 @@
 				}
 			},
             {
+                "command": "zenn-editor.create-new-article",
+				"title": "Zenn Editor: Create New Article",
+                "icon": "$(file-text)"
+            },
+            {
                 "command": "zenn-editor.refresh-tree-view",
                 "title": "Zenn Editor: Refresh Tree View",
                 "icon": "$(refresh)"
@@ -69,6 +74,11 @@
 				}
 			],
             "view/title": [
+                {
+                    "command": "zenn-editor.create-new-article",
+                    "when": "zenn-editor.activated && view == zenn",
+                    "group": "navigation"
+                },
                 {
                     "command": "zenn-editor.refresh-tree-view",
                     "when": "zenn-editor.activated && view == zenn",
