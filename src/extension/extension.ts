@@ -19,6 +19,7 @@ export function activate(context: vscode.ExtensionContext) {
         vscode.commands.registerCommand('zenn-editor.open-tree-view-item', openTreeViewItem()),
 		vscode.commands.registerCommand('zenn-editor.preview', previewDocument(context)),
 		vscode.commands.registerCommand('zenn-editor.create-new-article', createNewArticle()),
+		vscode.commands.registerCommand('zenn-editor.create-new-book', createNewBook()),
         vscode.commands.registerCommand('zenn-editor.open-image-uploader', openImageUploader()),
 	);
 	console.log('zenn-editor is now active');
@@ -51,6 +52,22 @@ function createNewArticle() {
             }
         }
     };
+}
+
+function createNewBook() {
+    return async () => {
+        if (vscode.workspace.workspaceFolders) {
+            const workspace = vscode.workspace.workspaceFolders[0];
+            const cli = await ZennCli.create(workspace.uri);
+            const newBook = await cli.createNewBook();
+            try {
+                const doc = await vscode.workspace.openTextDocument(newBook.configUri.underlying);
+                return await vscode.window.showTextDocument(doc, vscode.ViewColumn.One, false);
+            } catch (e) {
+                vscode.window.showErrorMessage(e.toString());
+            }
+        }
+    }
 }
 
 function openImageUploader() {

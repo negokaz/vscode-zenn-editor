@@ -5,6 +5,7 @@ import * as path from 'path';
 import * as process from 'process';
 import * as which from 'which';
 import ZennNewArticle from './zennNewArticle';
+import ZennNewBook from './zennNewBook';
 import Uri from '../util/uri';
 
 export class ZennCli {
@@ -49,6 +50,11 @@ export class ZennCli {
     public createNewArticle(): Promise<ZennNewArticle> {
         const childProcess = this.spawn(['new:article', '--machine-readable']);
         return ZennNewArticle.resolve(childProcess, Uri.of(this.workingDirectory));
+    }
+
+    public createNewBook(): Promise<ZennNewBook> {
+        const childProcess = this.spawn(['new:book']);
+        return ZennNewBook.resolve(childProcess, Uri.of(this.workingDirectory));
     }
 
     private spawn(args: string[]): childProcess.ChildProcessWithoutNullStreams {
