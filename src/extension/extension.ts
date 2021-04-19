@@ -2,20 +2,19 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 import PreviewViewManager from './preview/previewViewManager';
-import { ZennTreeViewProvider } from './treeView/zennTreeViewProvider';
-import ExtensionResource from './resource/extensionResource';
+import { ZennTeeViewManager } from './treeView/zennTreeViewManager';
 import { ZennCli } from './zenncli/zennCli';
 import { ZennWorkspace } from './util/zennWorkspace';
+
+const treeViewManager = ZennTeeViewManager.create();
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
     vscode.commands.executeCommand('setContext', 'zenn-editor.activated', true);
-
-    const zennViewProvider = new ZennTreeViewProvider(new ExtensionResource(context));
 	context.subscriptions.push(
-        vscode.window.registerTreeDataProvider('zenn', zennViewProvider),
-        vscode.commands.registerCommand('zenn-editor.refresh-tree-view', () => zennViewProvider.refresh()),
+        treeViewManager.openTreeView(context),
+        vscode.commands.registerCommand('zenn-editor.refresh-tree-view', () => treeViewManager.refresh()),
         vscode.commands.registerCommand('zenn-editor.open-tree-view-item', openTreeViewItem()),
 		vscode.commands.registerCommand('zenn-editor.preview', previewDocument(context)),
 		vscode.commands.registerCommand('zenn-editor.create-new-article', createNewArticle()),
@@ -43,6 +42,7 @@ function createNewArticle() {
         const workspace = await ZennWorkspace.findWorkspace();
         const cli = await ZennCli.create(workspace.rootDirectory.underlying);
         const newArticle = await cli.createNewArticle();
+        treeViewManager.refresh(newArticle.articleUri);
         try {
             const doc = await vscode.workspace.openTextDocument(newArticle.articleUri.underlying);
             return await vscode.window.showTextDocument(doc, vscode.ViewColumn.One, false);
@@ -57,6 +57,7 @@ function createNewBook() {
         const workspace = await ZennWorkspace.findWorkspace();
         const cli = await ZennCli.create(workspace.rootDirectory.underlying);
         const newBook = await cli.createNewBook();
+        treeViewManager.refresh(newBook.configUri);
         try {
             const doc = await vscode.workspace.openTextDocument(newBook.configUri.underlying);
             return await vscode.window.showTextDocument(doc, vscode.ViewColumn.One, false);

@@ -32,4 +32,8 @@ export default class Uri {
     public parentDirectory(): Uri {
         return Uri.file(path.dirname(this.fsPath()));
     }
+
+    public contains(uri: Uri): boolean {
+        return this.fsPath().startsWith(uri.fsPath());
+    }
 }
