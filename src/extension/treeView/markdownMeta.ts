@@ -28,6 +28,7 @@ export default class MarkdownMeta {
                 }
             });
             readlineIF.on("close", () => {
+                stream.close();
                 if (complete) {
                     try {
                         resolve(YAML.parse(yaml));

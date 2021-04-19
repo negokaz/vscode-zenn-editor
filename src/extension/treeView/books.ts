@@ -10,18 +10,32 @@ import { ZennTreeItem } from "./zennTreeItem";
 
 export class Books extends ZennTreeItem {
 
-    private readonly uri: Uri;
+    readonly parent: ZennTreeItem | undefined = undefined;
+
+    readonly uri: Uri;
 
     private readonly resources: ExtensionResource;
+
+    private children: Promise<ZennTreeItem[]>;
 
     constructor(uri: Uri, resources: ExtensionResource) {
         super("books", vscode.TreeItemCollapsibleState.Expanded);
         this.uri = uri;
         this.resources = resources;
         this.resourceUri = uri.underlying;
+        this.children = this.internalLoadChildren();
     }
 
-    async children(): Promise<ZennTreeItem[]> {
+    async getChildren(): Promise<ZennTreeItem[]> {
+        return this.children;
+    }
+
+    async loadChildren(): Promise<ZennTreeItem[]> {
+        this.children = this.internalLoadChildren();
+        return this.children;
+    }
+
+    private async internalLoadChildren(): Promise<ZennTreeItem[]> {
         const files = await fs.readdir(this.uri.fsPath());
         const fileWithStats = await Promise.all(
             files.map(async (file) => {
@@ -34,7 +48,7 @@ export class Books extends ZennTreeItem {
         );
         const loadedBooks = fileWithStats
             .filter(f => f.stat.isDirectory())
-            .map(d => Book.load(d.uri, this.resources));
+            .map(d => Book.load(this, d.uri, this.resources));
         return Promise.all(loadedBooks)
             .then(books => books.sort((a, b) => a.compare(b)));
     }
@@ -43,10 +57,11 @@ export class Books extends ZennTreeItem {
 
 class Book extends ZennTreeItem {
 
-    static async load(uri: Uri, resources: ExtensionResource): Promise<Book> {
+    static async load(parent: ZennTreeItem, uri: Uri, resources: ExtensionResource): Promise<Book> {
         const fsStat = fs.stat(uri.fsPath());
         const config = await Book.loadConfig(uri);
         return new Book(
+            parent,
             uri,
             config.title ? config.title : uri.basename(),
             config.published ? config.published : false,
@@ -56,7 +71,9 @@ class Book extends ZennTreeItem {
         );
     }
 
-    private readonly uri: Uri;
+    readonly parent: ZennTreeItem;
+
+    readonly uri: Uri;
 
     private readonly published: boolean;
 
@@ -66,8 +83,11 @@ class Book extends ZennTreeItem {
 
     private readonly resources: ExtensionResource;
 
-    private constructor(uri: Uri, title: string, published: boolean, chapters: string[] | undefined, lastModifiedTime: Date, resources: ExtensionResource) {
+    private children: Promise<ZennTreeItem[]>;
+
+    private constructor(parent: ZennTreeItem, uri: Uri, title: string, published: boolean, chapters: string[] | undefined, lastModifiedTime: Date, resources: ExtensionResource) {
         super(`📕 ${title}`, vscode.TreeItemCollapsibleState.Collapsed);
+        this.parent = parent;
         this.uri = uri;
         this.published = published;
         this.chapters = chapters;
@@ -79,31 +99,46 @@ class Book extends ZennTreeItem {
             published
                 ? resources.uri('media', 'icon', 'published.svg').fsPath
                 : resources.uri('media', 'icon', 'draft.svg').fsPath;
+        this.children = this.internalLoadChildren();
     }
 
-    async children(): Promise<ZennTreeItem[]> {
+    async getChildren(): Promise<ZennTreeItem[]> {
+        return this.children;
+    }
+
+    async loadChildren(): Promise<ZennTreeItem[]> {
+        this.children = this.internalLoadChildren();
+        return this.children;
+    }
+
+    private async internalLoadChildren(): Promise<ZennTreeItem[]> {
         const files = await fs.readdir(this.uri.fsPath());
         const loadedSections = Promise.all(
             this.chapters
                 ? this.chapters
-                    .map(c => this.uri.resolve(c))
+                    .map(c => this.uri.resolve(c + (c.endsWith('.md') ? '' : '.md')))
                     .filter(async f => {
-                        const stat = await fs.stat(f.fsPath());
-                        return stat.isFile();
+                        try {
+                            const stat = await fs.stat(f.fsPath());
+                            return stat.isFile();
+                        } catch (e) {
+                            console.error("Loading sections failed", e);
+                            return false;
+                        }
                     })
-                    .map(f => BookSection.load(f, this.resources))
+                    .map(f => BookSection.load(this, f, this.resources))
                 : files
                     .filter(f => path.extname(f) === '.md')
-                    .map(f => BookSection.load(this.uri.resolve(f), this.resources))
+                    .map(f => BookSection.load(this, this.uri.resolve(f), this.resources))
         ).then(sections => sections.sort((a, b) => a.compare(b)));
         const bookCover =
             files
                 .filter(f => f === 'cover.png' || f === 'cover.jpeg')
-                .map(f => BookCover.load(this.uri.resolve(f)));
+                .map(f => BookCover.load(this, this.uri.resolve(f)));
         const bookConfig =
             files
                 .filter(f => f === 'config.yaml')
-                .map(f => BookConfig.load(this.uri.resolve(f)));
+                .map(f => BookConfig.load(this, this.uri.resolve(f)));
 
         const result: Promise<ZennTreeItem>[] = [];
         return (await loadedSections as ZennTreeItem[]).concat(await Promise.all(result.concat(bookCover).concat(bookConfig)));
@@ -130,9 +165,10 @@ class Book extends ZennTreeItem {
 
 class BookSection extends ZennTreeItem {
 
-    static async load(uri: Uri, resources: ExtensionResource): Promise<BookSection> {
+    static async load(parent: ZennTreeItem, uri: Uri, resources: ExtensionResource): Promise<BookSection> {
         const meta = await MarkdownMeta.loadMeta(uri);
         return new BookSection(
+            parent,
             uri,
             meta.title ? meta.title : uri.basename(),
             meta.free ? meta.free : false,
@@ -140,12 +176,15 @@ class BookSection extends ZennTreeItem {
         );
     }
 
-    private readonly uri: Uri;
+    readonly parent: ZennTreeItem;
+
+    readonly uri: Uri;
 
     private readonly sectionNo: number;
 
-    private constructor(uri: Uri, title: string, free: boolean, resources: ExtensionResource) {
+    private constructor(parent: ZennTreeItem, uri: Uri, title: string, free: boolean, resources: ExtensionResource) {
         super(`📄 ${title}`, vscode.TreeItemCollapsibleState.None);
+        this.parent = parent;
         this.uri = uri;
         this.sectionNo = BookSection.extractSectionNo(uri);
         this.tooltip = uri.basename();
@@ -177,14 +216,17 @@ class BookSection extends ZennTreeItem {
 
 class BookConfig extends ZennTreeItem {
 
-    static async load(uri: Uri): Promise<BookConfig> {
-        return new BookConfig(uri);
+    static async load(parent: ZennTreeItem, uri: Uri): Promise<BookConfig> {
+        return new BookConfig(parent, uri);
     }
 
-    private readonly uri: Uri;
+    readonly parent: ZennTreeItem;
 
-    private constructor(uri: Uri) {
+    readonly uri: Uri;
+
+    private constructor(parent: ZennTreeItem, uri: Uri) {
         super(uri.basename(), vscode.TreeItemCollapsibleState.None);
+        this.parent = parent;
         this.uri = uri;
         this.tooltip = uri.basename();
         this.command = new OpenZennTreeViewItemCommand(this.uri);
@@ -194,14 +236,17 @@ class BookConfig extends ZennTreeItem {
 
 class BookCover extends ZennTreeItem {
 
-    static async load(uri: Uri): Promise<BookCover> {
-        return new BookCover(uri);
+    static async load(parent: ZennTreeItem, uri: Uri): Promise<BookCover> {
+        return new BookCover(parent, uri);
     }
 
-    private readonly uri: Uri;
+    readonly parent: ZennTreeItem;
 
-    private constructor(uri: Uri) {
+    readonly uri: Uri;
+
+    private constructor(parent: ZennTreeItem, uri: Uri) {
         super(uri.basename(), vscode.TreeItemCollapsibleState.None);
+        this.parent = parent;
         this.uri = uri;
         this.tooltip = uri.basename();
         this.command = new OpenZennTreeViewItemCommand(this.uri);
