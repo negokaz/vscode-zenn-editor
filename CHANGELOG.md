@@ -7,6 +7,15 @@ vscode-zenn-editor の注目すべき変更はこのファイルで文書化さ�
 ## [リリース予定]
 [リリース予定]: https://github.com/negokaz/vscode-zenn-editor/compare/v0.4.0...HEAD
 
+### Added
+
+- article と book を VSCode 上で作成できるようになりました [PR#9](https://github.com/negokaz/vscode-zenn-editor/pull/9)
+
+    `ZENN CONTENTS` ビューに表示されるアイコンをクリックするか、コマンドパレットで次のコマンドを実行します
+
+    - Zenn Editor: Create New Article
+    - Zenn Editor: Create New Book
+
 ## [0.4.0] - 2021-02-28
 [0.4.0]: https://github.com/negokaz/vscode-zenn-editor/compare/v0.3.0...v0.4.0
 
