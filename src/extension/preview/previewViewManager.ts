@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import ImageUploaderItem from '../statusBar/imageUploaderItem';
 import PreviewView from './previewView';
+import Uri from '../util/uri';
 
 export default class PreviewViewManager {
 
@@ -14,7 +15,7 @@ export default class PreviewViewManager {
 
     private constructor() {}
 
-    public async openPreview(uri: vscode.Uri, context: vscode.ExtensionContext): Promise<void> {
+    public async openPreview(uri: Uri, context: vscode.ExtensionContext): Promise<void> {
         if (this.previewView) {
             this.previewView.reveal();
         } else {

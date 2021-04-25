@@ -29,6 +29,10 @@ export default class Uri {
         return Uri.file(path.resolve.apply(null, [this.underlying.fsPath].concat(pathSegments)));
     }
 
+    public relativePathFrom(from: Uri): String {
+        return this.underlying.path.substr(from.underlying.path.length + 1);
+    }
+
     public parentDirectory(): Uri {
         return Uri.file(path.dirname(this.fsPath()));
     }

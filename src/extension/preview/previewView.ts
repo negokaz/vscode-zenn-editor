@@ -4,22 +4,24 @@ import ZennPreview from "../zenncli/zennPreview";
 import { ZennPreviewProxyServer } from "../zenncli/zennPreviewProxyServer";
 import ExtensionResource from "../resource/extensionResource";
 import { ZennCli } from "../zenncli/zennCli";
+import Uri from '../util/uri';
 
 export default class PreviewView {
 
-    static async open(uri: vscode.Uri, context: vscode.ExtensionContext): Promise<PreviewView> {
+    static async open(uri: Uri, context: vscode.ExtensionContext): Promise<PreviewView> {
         const resource = new ExtensionResource(context);
 
         const workingDirectoryUri =
-            vscode.workspace.getWorkspaceFolder(uri)?.uri;
+            vscode.workspace.getWorkspaceFolder(uri.underlying)?.uri;
 
         if (workingDirectoryUri) {
+            const wdUri = Uri.of(workingDirectoryUri);
             const port = await getPort();
             const backendPort = await getPort();
 
             const documentRelativePath =
-                this.resolveDocuemntRelativePath(uri, workingDirectoryUri);
-            const zennCli = await ZennCli.create(workingDirectoryUri);
+                this.resolveDocuemntRelativePath(uri, wdUri);
+            const zennCli = await ZennCli.create(wdUri);
             const zennPreview = zennCli.preview(backendPort);
             const zennPreviewProxyServer =
                 ZennPreviewProxyServer.start(zennPreview.host, port, backendPort, documentRelativePath, resource);
@@ -80,8 +82,8 @@ export default class PreviewView {
         }
     }
 
-    private static resolveDocuemntRelativePath(documentUri: vscode.Uri, cwdUri: vscode.Uri): string {
-        return documentUri.path.substr(cwdUri.path.length + 1).replace(/\.(md|md\.git)$/, "");
+    private static resolveDocuemntRelativePath(documentUri: Uri, cwdUri: Uri): string {
+        return documentUri.relativePathFrom(cwdUri).replace(/\.(md|md\.git)$/, "");
     }
 
     private webviewHtml(): string {
@@ -101,7 +103,7 @@ export default class PreviewView {
 
     private handleDidChangeActiveTextEditor(textEditor: vscode.TextEditor) {
         if (textEditor.document.languageId === 'markdown') {
-            const documentRelativePath = PreviewView.resolveDocuemntRelativePath(textEditor.document.uri, this.zennPreview.workingDirectory);
+            const documentRelativePath = PreviewView.resolveDocuemntRelativePath(Uri.of(textEditor.document.uri), this.zennPreview.workingDirectory);
             console.log("change path: " + documentRelativePath);
             this.webviewPanel.webview.postMessage({ command: 'change_path', relativePath: documentRelativePath });
         }
