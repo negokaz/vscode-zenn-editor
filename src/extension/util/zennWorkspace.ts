@@ -31,7 +31,7 @@ export class ZennWorkspace {
         return Promise.reject(new Error("ワークスペースが必要です"));
     }
 
-    private static async resolveWorkspace(workspace: Uri): Promise<ZennWorkspace[]> {
+    public static async resolveWorkspace(workspace: Uri): Promise<ZennWorkspace[]> {
         const articles = workspace.resolve('articles');
         const articlesStat = fs.stat(articles.fsPath());
         const books = workspace.resolve('books');

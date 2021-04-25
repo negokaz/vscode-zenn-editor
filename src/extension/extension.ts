@@ -40,7 +40,7 @@ function previewDocument(context: vscode.ExtensionContext) {
 
 function createNewArticle() {
     return async () => {
-        const workspace = await ZennWorkspace.findActiveWorkspace();
+        const workspace = await treeViewManager.activeWorkspace();
         const cli = await ZennCli.create(workspace.rootDirectory);
         const newArticle = await cli.createNewArticle();
         treeViewManager.refresh(newArticle.articleUri);
@@ -55,7 +55,7 @@ function createNewArticle() {
 
 function createNewBook() {
     return async () => {
-        const workspace = await ZennWorkspace.findActiveWorkspace();
+        const workspace = await treeViewManager.activeWorkspace();
         const cli = await ZennCli.create(workspace.rootDirectory);
         const newBook = await cli.createNewBook();
         treeViewManager.refresh(newBook.configUri);

@@ -3,6 +3,7 @@ import { ZennTreeViewProvider } from "./zennTreeViewProvider";
 import { ZennTreeItem } from "./zennTreeItem";
 import Uri from "../util/uri";
 import ExtensionResource from "../resource/extensionResource";
+import { ZennWorkspace } from '../util/zennWorkspace';
 
 export class ZennTeeViewManager {
 
@@ -68,5 +69,18 @@ export class ZennTeeViewManager {
                 resolve();
             }
         }
+    }
+
+    public async activeWorkspace(): Promise<ZennWorkspace> {
+        if (this.treeView) {
+            if (this.treeView.selection.length > 0) {
+                const selection = this.treeView.selection[0];
+                const uri = selection.uri.workspaceDirectory();
+                if (uri) {
+                    return (await ZennWorkspace.resolveWorkspace(uri))[0];
+                }
+            }
+        }
+        return ZennWorkspace.findActiveWorkspace();
     }
 }
