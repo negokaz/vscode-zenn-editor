@@ -2,8 +2,7 @@ import * as vscode from 'vscode';
 import { promises as fs } from 'fs';
 import ExtensionResource from '../resource/extensionResource';
 import Uri from '../util/uri';
-import { Books } from './books';
-import { Articles } from './articles';
+import { Workspace } from './workspace';
 import { ZennTreeItem } from './zennTreeItem';
 import { ZennWorkspace } from '../util/zennWorkspace';
 
@@ -17,13 +16,13 @@ export class ZennTreeViewProvider implements vscode.TreeDataProvider<ZennTreeIte
 
     readonly onDidChangeTreeData: vscode.Event<ZennTreeItem | undefined> = this._onDidChangeTreeData.event;
 
-    private workspace: Promise<ZennWorkspace>;
+    private workspaces: Promise<ZennWorkspace[]>;
 
     private rootItems: Promise<ZennTreeItem[]>;
 
     constructor(resources: ExtensionResource) {
         this.resources = resources;
-        this.workspace = ZennWorkspace.findActiveWorkspace();
+        this.workspaces = ZennWorkspace.findWorkspaces();
         this.rootItems = this.loadRootItems();
         vscode.workspace.onDidCreateFiles(() => this.refresh());
         vscode.workspace.onDidDeleteFiles(() => this.refresh());
@@ -57,8 +56,8 @@ export class ZennTreeViewProvider implements vscode.TreeDataProvider<ZennTreeIte
     }
 
     private async findClosestItem(uri: Uri): Promise<ZennTreeItem | undefined> {
-        const workspace = await this.workspace;
-        if (!uri.contains(workspace.rootDirectory)) {
+        const workspaceOfItem = (await this.workspaces).find(w => uri.contains(w.rootDirectory));
+        if (!workspaceOfItem) {
             // out of workspace
             return undefined;
         }
@@ -77,14 +76,8 @@ export class ZennTreeViewProvider implements vscode.TreeDataProvider<ZennTreeIte
     }
 
     private async loadRootItems(): Promise<ZennTreeItem[]> {
-        const workspace = await this.workspace;
-        const items: ZennTreeItem[] = [];
-        if (workspace.articlesDirectory) {
-            items.push(new Articles(workspace.articlesDirectory, this.resources));
-        }
-        if (workspace.booksDirectory) {
-            items.push(new Books(workspace.booksDirectory, this.resources));
-        }
-        return Promise.resolve(items);
+        return Promise.all(
+            (await this.workspaces).map(w => new Workspace(w, this.resources))
+        );
     }
 }
