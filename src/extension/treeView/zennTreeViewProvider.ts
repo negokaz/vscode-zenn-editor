@@ -23,7 +23,7 @@ export class ZennTreeViewProvider implements vscode.TreeDataProvider<ZennTreeIte
 
     constructor(resources: ExtensionResource) {
         this.resources = resources;
-        this.workspace = ZennWorkspace.findWorkspace();
+        this.workspace = ZennWorkspace.findActiveWorkspace();
         this.rootItems = this.loadRootItems();
         vscode.workspace.onDidCreateFiles(() => this.refresh());
         vscode.workspace.onDidDeleteFiles(() => this.refresh());

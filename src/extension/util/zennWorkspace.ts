@@ -1,28 +1,44 @@
 import Uri from './uri';
 import * as vscode from 'vscode';
 import { promises as fs } from 'fs';
+import { worker } from 'node:cluster';
 
 export class ZennWorkspace {
 
-    public static async findWorkspace(): Promise<ZennWorkspace> {
-        if (vscode.workspace.workspaceFolders) {
-            for (let folder of vscode.workspace.workspaceFolders) {
-                const workspace = Uri.of(folder.uri);
-                const articles = workspace.resolve('articles');
-                const articlesStat = fs.stat(articles.fsPath());
-                const books = workspace.resolve('books');
-                const booksStat = fs.stat(books.fsPath());
-                const articlesDir = (await articlesStat).isDirectory() ? articles : undefined;
-                const booksDir = (await booksStat).isDirectory() ? books : undefined;
-                if (articlesDir || booksDir) {
-                    return new ZennWorkspace(
-                        articlesDir,
-                        booksDir,
-                    );
+    public static async findActiveWorkspace(): Promise<ZennWorkspace> {
+        if (vscode.window.activeTextEditor) {
+            const activeWorkspace =
+                vscode.workspace.getWorkspaceFolder(vscode.window.activeTextEditor.document.uri);
+            if (activeWorkspace) {
+                const result = await this.resolveWorkspace(Uri.of(activeWorkspace.uri));
+                if (result.length > 0) {
+                    return result[0];
                 }
             }
         }
-        return Promise.reject(new Error("Zenn workspace not found"));
+        return (await this.findWorkspaces())[0]; // Zenn の Workspace があるときだけ拡張が有効になる
+    }
+
+    public static async findWorkspaces(): Promise<ZennWorkspace[]> {
+        if (vscode.workspace.workspaceFolders) {
+            const zennWorkspaces =
+                Promise.all(
+                    vscode.workspace.workspaceFolders
+                        .map(async folder => this.resolveWorkspace(Uri.of(folder.uri)))
+                );
+            return (await zennWorkspaces).flatMap(i => i /*identity*/);
+        }
+        return Promise.reject(new Error("ワークスペースが必要です"));
+    }
+
+    private static async resolveWorkspace(workspace: Uri): Promise<ZennWorkspace[]> {
+        const articles = workspace.resolve('articles');
+        const articlesStat = fs.stat(articles.fsPath());
+        const books = workspace.resolve('books');
+        const booksStat = fs.stat(books.fsPath());
+        const articlesDir = (await articlesStat).isDirectory() ? articles : undefined;
+        const booksDir = (await booksStat).isDirectory() ? books : undefined;
+        return (articlesDir || booksDir) ? [new ZennWorkspace(articlesDir, booksDir)] : [];
     }
 
     public readonly rootDirectory: Uri;
