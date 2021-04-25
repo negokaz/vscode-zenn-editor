@@ -17,9 +17,11 @@ export default class PreviewViewManager {
 
     public async openPreview(uri: Uri, context: vscode.ExtensionContext): Promise<void> {
         if (this.previewView) {
+            this.previewView.open(uri);
             this.previewView.reveal();
         } else {
-            this.previewView = await PreviewView.open(uri, context);
+            this.previewView = await PreviewView.create(context);
+            this.previewView.open(uri);
             this.previewView.onDidClose(() => {
                 this.previewView = undefined;
                 this.imageUploaderStatusbarItem.hide();

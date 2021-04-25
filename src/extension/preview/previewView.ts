@@ -1,70 +1,39 @@
 import * as vscode from "vscode";
-import * as getPort from 'get-port';
-import ZennPreview from "../zenncli/zennPreview";
-import { ZennPreviewProxyServer } from "../zenncli/zennPreviewProxyServer";
+import { PreviewBackend } from './previewBackend';
 import ExtensionResource from "../resource/extensionResource";
-import { ZennCli } from "../zenncli/zennCli";
 import Uri from '../util/uri';
 
 export default class PreviewView {
 
-    static async open(uri: Uri, context: vscode.ExtensionContext): Promise<PreviewView> {
+    static async create(context: vscode.ExtensionContext): Promise<PreviewView> {
         const resource = new ExtensionResource(context);
+        const panel = vscode.window.createWebviewPanel(
+            'zenn-editor.preview',
+            'Zenn Editor Preview',
+            vscode.ViewColumn.Two,
+            {
+                enableScripts: true,
+                localResourceRoots: [vscode.Uri.file(context.extensionPath)],
+            }
+        );
+        context.subscriptions.push(panel);
 
-        const workingDirectoryUri =
-            vscode.workspace.getWorkspaceFolder(uri.underlying)?.uri;
-
-        if (workingDirectoryUri) {
-            const wdUri = Uri.of(workingDirectoryUri);
-            const port = await getPort();
-            const backendPort = await getPort();
-
-            const documentRelativePath =
-                this.resolveDocuemntRelativePath(uri, wdUri);
-            const zennCli = await ZennCli.create(wdUri);
-            const zennPreview = zennCli.preview(backendPort);
-            const zennPreviewProxyServer =
-                ZennPreviewProxyServer.start(zennPreview.host, port, backendPort, documentRelativePath, resource);
-
-            const panel = vscode.window.createWebviewPanel(
-                'zenn-editor.preview',
-                'Zenn Editor Preview',
-                vscode.ViewColumn.Two,
-                {
-                    enableScripts: true,
-                    localResourceRoots: [vscode.Uri.file(context.extensionPath)],
-                }
-            );
-            context.subscriptions.push(panel);
-
-            return new PreviewView(panel, zennPreview, zennPreviewProxyServer, resource);
-        } else {
-            const message = `ドキュメントのワークスペースが見つかりません: ${uri.fsPath}`;
-            vscode.window.showErrorMessage(message)
-            return Promise.reject(message);
-        }
+        return new PreviewView(panel, resource);
     }
 
 
     private readonly webviewPanel: vscode.WebviewPanel;
 
-    private readonly zennPreview: ZennPreview;
+    private readonly previewBackends: Map<string, PreviewBackend> = new Map();
 
-    private readonly zennPreviewProxyServer: ZennPreviewProxyServer;
+    private currentBackend: PreviewBackend | undefined;
 
     private readonly resource: ExtensionResource;
 
-    private constructor(webviewPanel: vscode.WebviewPanel, zennCliPreview: ZennPreview, localProxyServer: ZennPreviewProxyServer, resource: ExtensionResource) {
-        this.zennPreview = zennCliPreview;
-        this.zennPreviewProxyServer = localProxyServer;
+    private constructor(webviewPanel: vscode.WebviewPanel, resource: ExtensionResource) {
         this.resource = resource;
         this.webviewPanel = webviewPanel;
-        this.webviewPanel.webview.html = this.webviewHtml();
         this.webviewPanel.webview.onDidReceiveMessage(this.receiveWebviewMessage);
-        this.webviewPanel.onDidDispose(() => {
-            this.zennPreview.close();
-            this.zennPreviewProxyServer.stop();
-        });
         vscode.window.onDidChangeActiveTextEditor(editor => {
             if (editor) {
                 this.handleDidChangeActiveTextEditor(editor)
@@ -86,7 +55,7 @@ export default class PreviewView {
         return documentUri.relativePathFrom(cwdUri).replace(/\.(md|md\.git)$/, "");
     }
 
-    private webviewHtml(): string {
+    private webviewHtml(previewBackend: PreviewBackend): string {
         return `
             <html>
                 <head>
@@ -94,18 +63,42 @@ export default class PreviewView {
                 </head>
                 <body>
                     <div>
-                        <iframe id="zenn-proxy" src="${this.zennPreviewProxyServer.entrypointUrl()}" width="100%" height="100%" seamless frameborder=0></iframe>
+                        <iframe id="zenn-proxy" src="${previewBackend.entrypointUrl()}" width="100%" height="100%" seamless frameborder=0></iframe>
                     </div>
                 </body>
             </html>
         `;
     }
 
-    private handleDidChangeActiveTextEditor(textEditor: vscode.TextEditor) {
+    private async handleDidChangeActiveTextEditor(textEditor: vscode.TextEditor): Promise<void> {
         if (textEditor.document.languageId === 'markdown') {
-            const documentRelativePath = PreviewView.resolveDocuemntRelativePath(Uri.of(textEditor.document.uri), this.zennPreview.workingDirectory);
-            console.log("change path: " + documentRelativePath);
-            this.webviewPanel.webview.postMessage({ command: 'change_path', relativePath: documentRelativePath });
+            const document = Uri.of(textEditor.document.uri);
+            const workspace = document.workspaceDirectory();
+            if (workspace) {
+                if (!(this.currentBackend && this.currentBackend.isProvide(document))) {
+                    await this.open(document);
+                }
+                const documentRelativePath = PreviewView.resolveDocuemntRelativePath(document, workspace);
+                this.webviewPanel.webview.postMessage({ command: 'change_path', relativePath: documentRelativePath });
+            }
+        }
+    }
+
+    public async open(uri: Uri): Promise<void> {
+        const workspace = uri.workspaceDirectory();
+        if (workspace) {
+            const key = workspace.fsPath();
+            const backend = this.previewBackends.get(key);
+            if (backend) {
+                this.currentBackend = backend;
+                this.webviewPanel.webview.html = this.webviewHtml(backend);
+            } else {
+                const newBackend = await PreviewBackend.start(uri, this.resource);
+                this.previewBackends.set(key, newBackend);
+                this.webviewPanel.onDidDispose(() => newBackend.stop());
+                this.currentBackend = newBackend;
+                this.webviewPanel.webview.html = this.webviewHtml(newBackend);
+            }
         }
     }
 
