@@ -37,25 +37,25 @@
 					"dark": "./media/icon/preview-dark.svg"
 				}
 			},
-            {
-                "command": "zenn-editor.create-new-article",
+			{
+				"command": "zenn-editor.create-new-article",
 				"title": "Zenn Editor: Create New Article",
-                "icon": "$(file-text)"
-            },
-            {
-                "command": "zenn-editor.create-new-book",
+				"icon": "$(file-text)"
+			},
+			{
+				"command": "zenn-editor.create-new-book",
 				"title": "Zenn Editor: Create New Book",
-                "icon": "$(book)"
-            },
-            {
-                "command": "zenn-editor.refresh-tree-view",
-                "title": "Zenn Editor: Refresh Tree View",
-                "icon": "$(refresh)"
-            },
-            {
-                "command": "zenn-editor.open-tree-view-item",
-                "title": "Zenn Editor: Open Tree View Item"
-            }
+				"icon": "$(book)"
+			},
+			{
+				"command": "zenn-editor.refresh-tree-view",
+				"title": "Zenn Editor: Refresh Tree View",
+				"icon": "$(refresh)"
+			},
+			{
+				"command": "zenn-editor.open-tree-view-item",
+				"title": "Zenn Editor: Open Tree View Item"
+			}
 		],
 		"menus": {
 			"commandPalette": [
@@ -78,30 +78,30 @@
 					"group": "navigation"
 				}
 			],
-            "view/title": [
-                {
-                    "command": "zenn-editor.create-new-article",
-                    "when": "zenn-editor.activated && view == zenn",
-                    "group": "navigation"
-                },
-                {
-                    "command": "zenn-editor.create-new-book",
-                    "when": "zenn-editor.activated && view == zenn",
-                    "group": "navigation"
-                },
-                {
-                    "command": "zenn-editor.refresh-tree-view",
-                    "when": "zenn-editor.activated && view == zenn",
-                    "group": "navigation"
-                }
-            ]
+			"view/title": [
+				{
+					"command": "zenn-editor.create-new-article",
+					"when": "zenn-editor.activated && view == zenn",
+					"group": "navigation"
+				},
+				{
+					"command": "zenn-editor.create-new-book",
+					"when": "zenn-editor.activated && view == zenn",
+					"group": "navigation"
+				},
+				{
+					"command": "zenn-editor.refresh-tree-view",
+					"when": "zenn-editor.activated && view == zenn",
+					"group": "navigation"
+				}
+			]
 		},
 		"views": {
 			"explorer": [
 				{
 					"id": "zenn",
 					"name": "Zenn Contents",
-                    "when": "zenn-editor.activated"
+					"when": "zenn-editor.activated"
 				}
 			]
 		}
