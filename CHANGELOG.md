@@ -5,7 +5,12 @@ vscode-zenn-editor の注目すべき変更はこのファイルで文書化さ�
 このファイルの書き方に関する推奨事項については、[Keep a Changelog](http://keepachangelog.com/) を確認してください。
 
 ## [リリース予定]
-[リリース予定]: https://github.com/negokaz/vscode-zenn-editor/compare/v0.5.0...HEAD
+[リリース予定]: https://github.com/negokaz/vscode-zenn-editor/compare/v0.5.1...HEAD
+
+## [0.5.1] - 2021-04-26
+[0.5.1]: https://github.com/negokaz/vscode-zenn-editor/compare/v0.5.0...v0.5.1
+
+自動リリース動作確認用バージョンで、拡張本体の変更点はありません
 
 ## [0.5.0] - 2021-04-19
 [0.5.0]: https://github.com/negokaz/vscode-zenn-editor/compare/v0.4.0...v0.5.0
