@@ -117,7 +117,7 @@
 		"lint": "eslint src --ext ts",
 		"test": "node ./out/test/runTest.js",
 		"vsce:package": "vsce package --githubBranch main",
-		"vsce:publish": "vsce publish --githubBranch main"
+		"vsce:publish": "vsce publish --githubBranch main $(git-tag-version)"
 	},
 	"devDependencies": {
 		"@types/glob": "^7.1.3",
