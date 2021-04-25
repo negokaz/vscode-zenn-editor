@@ -2,7 +2,7 @@
 	"name": "zenn-editor",
 	"displayName": "Zenn Editor",
 	"description": "An unofficial extension integrates Zenn CLI into VS Code",
-	"version": "0.5.0",
+	"version": "0.5.1",
 	"publisher": "negokaz",
 	"engines": {
 		"vscode": "^1.52.0"
@@ -37,25 +37,25 @@
 					"dark": "./media/icon/preview-dark.svg"
 				}
 			},
-            {
-                "command": "zenn-editor.create-new-article",
+			{
+				"command": "zenn-editor.create-new-article",
 				"title": "Zenn Editor: Create New Article",
-                "icon": "$(file-text)"
-            },
-            {
-                "command": "zenn-editor.create-new-book",
+				"icon": "$(file-text)"
+			},
+			{
+				"command": "zenn-editor.create-new-book",
 				"title": "Zenn Editor: Create New Book",
-                "icon": "$(book)"
-            },
-            {
-                "command": "zenn-editor.refresh-tree-view",
-                "title": "Zenn Editor: Refresh Tree View",
-                "icon": "$(refresh)"
-            },
-            {
-                "command": "zenn-editor.open-tree-view-item",
-                "title": "Zenn Editor: Open Tree View Item"
-            }
+				"icon": "$(book)"
+			},
+			{
+				"command": "zenn-editor.refresh-tree-view",
+				"title": "Zenn Editor: Refresh Tree View",
+				"icon": "$(refresh)"
+			},
+			{
+				"command": "zenn-editor.open-tree-view-item",
+				"title": "Zenn Editor: Open Tree View Item"
+			}
 		],
 		"menus": {
 			"commandPalette": [
@@ -78,30 +78,30 @@
 					"group": "navigation"
 				}
 			],
-            "view/title": [
-                {
-                    "command": "zenn-editor.create-new-article",
-                    "when": "zenn-editor.activated && view == zenn",
-                    "group": "navigation"
-                },
-                {
-                    "command": "zenn-editor.create-new-book",
-                    "when": "zenn-editor.activated && view == zenn",
-                    "group": "navigation"
-                },
-                {
-                    "command": "zenn-editor.refresh-tree-view",
-                    "when": "zenn-editor.activated && view == zenn",
-                    "group": "navigation"
-                }
-            ]
+			"view/title": [
+				{
+					"command": "zenn-editor.create-new-article",
+					"when": "zenn-editor.activated && view == zenn",
+					"group": "navigation"
+				},
+				{
+					"command": "zenn-editor.create-new-book",
+					"when": "zenn-editor.activated && view == zenn",
+					"group": "navigation"
+				},
+				{
+					"command": "zenn-editor.refresh-tree-view",
+					"when": "zenn-editor.activated && view == zenn",
+					"group": "navigation"
+				}
+			]
 		},
 		"views": {
 			"explorer": [
 				{
 					"id": "zenn",
 					"name": "Zenn Contents",
-                    "when": "zenn-editor.activated"
+					"when": "zenn-editor.activated"
 				}
 			]
 		}
@@ -117,7 +117,7 @@
 		"lint": "eslint src --ext ts",
 		"test": "node ./out/test/runTest.js",
 		"vsce:package": "vsce package --githubBranch main",
-		"vsce:publish": "vsce publish --githubBranch main"
+		"vsce:publish": "vsce publish --githubBranch main $(git-tag-version)"
 	},
 	"devDependencies": {
 		"@types/glob": "^7.1.3",
@@ -131,6 +131,7 @@
 		"@typescript-eslint/parser": "^4.14.1",
 		"css-loader": "^5.0.2",
 		"eslint": "^7.19.0",
+		"git-tag-version": "^1.3.1",
 		"glob": "^7.1.6",
 		"mocha": "^8.2.1",
 		"style-loader": "^2.0.0",
