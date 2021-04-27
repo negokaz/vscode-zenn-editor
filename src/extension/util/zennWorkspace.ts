@@ -33,11 +33,13 @@ export class ZennWorkspace {
 
     public static async resolveWorkspace(workspace: Uri): Promise<ZennWorkspace[]> {
         const articles = workspace.resolve('articles');
-        const articlesStat = fs.stat(articles.fsPath());
+        const articlesStatPromise = fs.stat(articles.fsPath()).catch(() => undefined);
         const books = workspace.resolve('books');
-        const booksStat = fs.stat(books.fsPath());
-        const articlesDir = (await articlesStat).isDirectory() ? articles : undefined;
-        const booksDir = (await booksStat).isDirectory() ? books : undefined;
+        const booksStatPromise = fs.stat(books.fsPath()).catch(() => undefined);
+        const articlesStat = await articlesStatPromise;
+        const booksStat = await booksStatPromise;
+        const articlesDir = articlesStat && articlesStat.isDirectory() ? articles : undefined;
+        const booksDir = booksStat && booksStat.isDirectory() ? books : undefined;
         return (articlesDir || booksDir) ? [new ZennWorkspace(articlesDir, booksDir)] : [];
     }
 
