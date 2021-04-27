@@ -29,11 +29,34 @@ export default class Uri {
         return Uri.file(path.resolve.apply(null, [this.underlying.fsPath].concat(pathSegments)));
     }
 
+    public relativePathFrom(from: Uri): String {
+        return this.underlying.path.substr(from.underlying.path.length + 1);
+    }
+
+    public workspaceDirectory(): Uri | undefined {
+        const workspace = vscode.workspace.getWorkspaceFolder(this.underlying);
+        if (workspace) {
+            return Uri.of(workspace.uri);
+        } else {
+            return undefined;
+        }
+    }
+
     public parentDirectory(): Uri {
         return Uri.file(path.dirname(this.fsPath()));
     }
 
     public contains(uri: Uri): boolean {
-        return this.fsPath().startsWith(uri.fsPath());
+        const self = this.fsPath().split(path.sep);
+        const other = uri.fsPath().split(path.sep);
+        if (self.length < other.length) {
+            return false;
+        }
+        for(let i = 0; i < other.length; i++) {
+            if (self[i] !== other[i]) {
+                return false;
+            }
+        }
+        return true;
     }
 }

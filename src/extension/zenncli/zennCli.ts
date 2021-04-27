@@ -1,7 +1,6 @@
 import * as vscode from 'vscode';
 import * as childProcess from 'child_process';
 import ZennPreview from './zennPreview';
-import * as path from 'path';
 import * as process from 'process';
 import * as which from 'which';
 import ZennNewArticle from './zennNewArticle';
@@ -10,7 +9,7 @@ import Uri from '../util/uri';
 
 export class ZennCli {
 
-    public static async create(workingDirectory: vscode.Uri): Promise<ZennCli> {
+    public static async create(workingDirectory: Uri): Promise<ZennCli> {
         try {
             const zennCliPath = await ZennCli.findZennCliPath(workingDirectory);
             return new ZennCli(workingDirectory, zennCliPath);
@@ -20,24 +19,24 @@ export class ZennCli {
         }
     }
 
-    private static async findZennCliPath(workingDirectory: vscode.Uri): Promise<vscode.Uri> {
+    private static async findZennCliPath(workingDirectory: Uri): Promise<Uri> {
         const env = Object.assign({}, process.env);
         const paths: string[] = new (require('path-array'))(env);
         for (let i = 0; i < paths.length; i++) {
-            paths[i] = path.resolve(workingDirectory.fsPath, paths[i]);
+            paths[i] = workingDirectory.resolve(paths[i]).fsPath();
         }
         // additional paths
         paths.unshift(
-            path.join(workingDirectory.fsPath, 'node_modules', '.bin'),
+            workingDirectory.resolve('node_modules', '.bin').fsPath(),
         );
-        return vscode.Uri.file(await which('zenn', { path: env.PATH }));
+        return Uri.file(await which('zenn', { path: env.PATH }));
     }
 
-    readonly workingDirectory: vscode.Uri;
+    readonly workingDirectory: Uri;
 
-    readonly zennCliPath: vscode.Uri;
+    readonly zennCliPath: Uri;
 
-    private constructor(workingDirectory: vscode.Uri, zennCliPath: vscode.Uri) {
+    private constructor(workingDirectory: Uri, zennCliPath: Uri) {
         this.workingDirectory = workingDirectory;
         this.zennCliPath = zennCliPath;
     }
@@ -49,16 +48,16 @@ export class ZennCli {
 
     public createNewArticle(): Promise<ZennNewArticle> {
         const childProcess = this.spawn(['new:article', '--machine-readable']);
-        return ZennNewArticle.resolve(childProcess, Uri.of(this.workingDirectory));
+        return ZennNewArticle.resolve(childProcess, this.workingDirectory);
     }
 
     public createNewBook(): Promise<ZennNewBook> {
         const childProcess = this.spawn(['new:book']);
-        return ZennNewBook.resolve(childProcess, Uri.of(this.workingDirectory));
+        return ZennNewBook.resolve(childProcess, this.workingDirectory);
     }
 
     private spawn(args: string[]): childProcess.ChildProcessWithoutNullStreams {
-		const zennProcess =  childProcess.spawn(this.zennCliPath.fsPath, args, { cwd: this.workingDirectory.fsPath });
+		const zennProcess =  childProcess.spawn(this.zennCliPath.fsPath(), args, { cwd: this.workingDirectory.fsPath() });
         zennProcess.on('error', err => {
             vscode.window.showErrorMessage(`zenn-cli の起動に失敗しました: ${err.message}`);
         });
