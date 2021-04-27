@@ -23,6 +23,36 @@
 - 記事に埋め込まれた YouTube の動画は VS Code の制約によりプレビュー上で再生できません：
     - [Can not play video in webview · Issue · microsoft/vscode](https://github.com/microsoft/vscode/issues/54097)
 
+## Usages
+
+### article の作成
+
+Zenn Contents ビュー上の紙のアイコンをクリックするか、コマンドパレットから `Zenn Editor: Create New Article` を実行します。
+
+![](docs/images/tree-view-commands.png)
+
+### book の作成
+
+Zenn Contents ビュー上の本のアイコンをクリックするか、コマンドパレットから `Zenn Editor: Create New Book` を実行します。
+
+![](docs/images/tree-view-commands.png)
+
+### 投稿コンテンツのプレビュー
+
+投稿コンテンツの編集中に、次のプレビューボタンをクリックします。
+
+![](docs/images/preview-button.png)
+
+### 複数のリポジトリをひとつのウィンドウで編集する
+
+Zenn には 2 つまで連携するリポジトリを設定できます。
+
+複数のリポジトリをひとつのウィンドウで編集するには、VSCode のワークスペースを構成します。
+
+`Add Folder to Workspace` でもうひとつのローカルリポジトリを指定し、`Save Workspace As` でワークスペースを保存します。保存されたワークスペースを開くと複数のリポジトリの同時編集をいつでも再開できます。
+
+![](docs/images/create-workspace.png)
+
 ## Changelog
 
 [CHANGELOG.md](CHANGELOG.md) を参照してください。
