@@ -251,6 +251,10 @@ class BookConfig extends ZennTreeItem {
     async reload(): Promise<ZennTreeItem> {
         return BookConfig.load(this.parent, this.uri);
     }
+
+    itemNeedToReload(): ZennTreeItem {
+        return this.parent;
+    }
 }
 
 class BookCover extends ZennTreeItem {

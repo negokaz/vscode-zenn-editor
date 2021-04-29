@@ -29,14 +29,18 @@ export class ZennTreeViewProvider implements vscode.TreeDataProvider<ZennTreeIte
     public async refresh(uri?: Uri): Promise<void> {
         if (uri) {
             const item = await this.findClosestItem(uri);
-            this._onDidChangeTreeData.fire(item);
+            this._onDidChangeTreeData.fire(item?.itemNeedToReload());
         } else {
             this._onDidChangeTreeData.fire(undefined);
         }
     }
 
     async getTreeItem(element: ZennTreeItem): Promise<vscode.TreeItem> {
-        return element.reload();
+        // 開閉状態を維持する
+        const currentCollapsibleState = element.collapsibleState;
+        const reloadedElement = await element.reload();
+        reloadedElement.collapsibleState = currentCollapsibleState;
+        return reloadedElement;
     }
 
     async getChildren(element?: ZennTreeItem): Promise<ZennTreeItem[]> {
