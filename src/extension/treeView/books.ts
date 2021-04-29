@@ -153,10 +153,11 @@ class Book extends ZennTreeItem {
     }
 
     public compare(other: Book): number {
-        if (this.published) {
+        if (!this.published && other.published) {
             // 下書きを上位に表示
-            return 1;
+            return -1;
         } else {
+            // どちらも公開済みか、どちらも下書きの場合は最終更新日時が新しいものを上位に表示
             return other.lastModifiedTime.getTime() - this.lastModifiedTime.getTime();
         }
     }
