@@ -1,6 +1,6 @@
 # VS Code Zenn Editor
 
-[![](https://img.shields.io/visual-studio-marketplace/v/negokaz.zenn-editor.svg)](https://marketplace.visualstudio.com/items?itemName=negokaz.zenn-editor)
+[![](https://img.shields.io/visual-studio-marketplace/v/negokaz.zenn-editor.svg)](https://marketplace.visualstudio.com/items?itemName=negokaz.zenn-editor) [![](https://img.shields.io/visual-studio-marketplace/i/negokaz.zenn-editor)](https://marketplace.visualstudio.com/items?itemName=negokaz.zenn-editor)
 
 [Zenn CLI](https://zenn.dev/zenn/articles/install-zenn-cli) を VS Code に統合する非公式の拡張です。
 
