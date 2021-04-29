@@ -39,9 +39,11 @@ export class ZennTeeViewManager {
         }
     }
 
-    public refresh(uri?: Uri): void {
+    public async refresh(uri?: Uri): Promise<void> {
         if (this.treeViewProvider) {
-            this.treeViewProvider.refresh(uri);
+            return this.treeViewProvider.refresh(uri);
+        } else {
+            return Promise.resolve();
         }
     }
 

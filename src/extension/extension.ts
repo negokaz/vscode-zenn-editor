@@ -43,7 +43,7 @@ function createNewArticle() {
         const workspace = await treeViewManager.activeWorkspace();
         const cli = await ZennCli.create(workspace.rootDirectory);
         const newArticle = await cli.createNewArticle();
-        treeViewManager.refresh(newArticle.articleUri);
+        await treeViewManager.refresh(newArticle.articleUri);
         try {
             const doc = await vscode.workspace.openTextDocument(newArticle.articleUri.underlying);
             return await vscode.window.showTextDocument(doc, vscode.ViewColumn.One, false);
@@ -58,7 +58,7 @@ function createNewBook() {
         const workspace = await treeViewManager.activeWorkspace();
         const cli = await ZennCli.create(workspace.rootDirectory);
         const newBook = await cli.createNewBook();
-        treeViewManager.refresh(newBook.configUri);
+        await treeViewManager.refresh(newBook.configUri);
         try {
             const doc = await vscode.workspace.openTextDocument(newBook.configUri.underlying);
             return await vscode.window.showTextDocument(doc, vscode.ViewColumn.One, false);
