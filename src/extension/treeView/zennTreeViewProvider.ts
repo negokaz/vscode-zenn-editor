@@ -38,8 +38,8 @@ export class ZennTreeViewProvider implements vscode.TreeDataProvider<ZennTreeIte
         }
     }
 
-    getTreeItem(element: ZennTreeItem): vscode.TreeItem {
-        return element;
+    async getTreeItem(element: ZennTreeItem): Promise<vscode.TreeItem> {
+        return element.reload();
     }
 
     async getChildren(element?: ZennTreeItem): Promise<ZennTreeItem[]> {

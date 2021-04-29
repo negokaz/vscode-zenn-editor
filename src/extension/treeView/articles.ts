@@ -34,6 +34,10 @@ export class Articles extends ZennTreeItem {
         return this.children;
     }
 
+    async reload(): Promise<ZennTreeItem> {
+        return new Articles(this.uri, this.resources);
+    }
+
     private async internalLoadChildren(): Promise<ZennTreeItem[]> {
         const files = await fs.readdir(this.uri.fsPath());
         const loadedArticles = files
@@ -63,6 +67,8 @@ class Article extends ZennTreeItem {
 
     readonly uri: Uri;
 
+    readonly resources: ExtensionResource;
+
     private readonly published: boolean;
 
     private readonly lastModifiedTime: Date;
@@ -71,6 +77,7 @@ class Article extends ZennTreeItem {
         super(`${emoji} ${title}`, vscode.TreeItemCollapsibleState.None);
         this.parent = parent;
         this.uri = uri;
+        this.resources = resources;
         this.published = published;
         this.lastModifiedTime = lastModifiedTime;
         this.tooltip = uri.basename();
@@ -81,6 +88,10 @@ class Article extends ZennTreeItem {
                 ? resources.uri('media', 'icon', 'published.svg').fsPath
                 : resources.uri('media', 'icon', 'draft.svg').fsPath;
 
+    }
+
+    async reload(): Promise<Article> {
+        return Article.load(this.parent, this.uri, this.resources);
     }
 
     public compare(other: Article): number {

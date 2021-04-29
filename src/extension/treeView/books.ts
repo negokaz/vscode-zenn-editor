@@ -35,6 +35,10 @@ export class Books extends ZennTreeItem {
         return this.children;
     }
 
+    async reload(): Promise<ZennTreeItem> {
+        return new Books(this.uri, this.resources);
+    }
+
     private async internalLoadChildren(): Promise<ZennTreeItem[]> {
         const files = await fs.readdir(this.uri.fsPath());
         const fileWithStats = await Promise.all(
@@ -111,6 +115,10 @@ class Book extends ZennTreeItem {
         return this.children;
     }
 
+    async reload(): Promise<ZennTreeItem> {
+        return Book.load(this.parent, this.uri, this.resources);
+    }
+
     private async internalLoadChildren(): Promise<ZennTreeItem[]> {
         const files = await fs.readdir(this.uri.fsPath());
         const loadedSections = Promise.all(
@@ -180,12 +188,15 @@ class BookSection extends ZennTreeItem {
 
     readonly uri: Uri;
 
+    readonly resources: ExtensionResource;
+
     private readonly sectionNo: number;
 
     private constructor(parent: ZennTreeItem, uri: Uri, title: string, free: boolean, resources: ExtensionResource) {
         super(`📄 ${title}`, vscode.TreeItemCollapsibleState.None);
         this.parent = parent;
         this.uri = uri;
+        this.resources = resources;
         this.sectionNo = BookSection.extractSectionNo(uri);
         this.tooltip = uri.basename();
         this.command = new OpenZennTreeViewItemCommand(this.uri);
@@ -194,6 +205,10 @@ class BookSection extends ZennTreeItem {
             free
                 ? resources.uri('media', 'icon', 'unlock.svg').fsPath
                 : resources.uri('media', 'icon', 'lock.svg').fsPath;
+    }
+
+    async reload(): Promise<ZennTreeItem> {
+        return BookSection.load(this.parent, this.uri, this.resources);
     }
 
     public compare(other: BookSection): number {
@@ -232,6 +247,10 @@ class BookConfig extends ZennTreeItem {
         this.command = new OpenZennTreeViewItemCommand(this.uri);
         this.resourceUri = this.uri.underlying;
     }
+
+    async reload(): Promise<ZennTreeItem> {
+        return BookConfig.load(this.parent, this.uri);
+    }
 }
 
 class BookCover extends ZennTreeItem {
@@ -251,5 +270,9 @@ class BookCover extends ZennTreeItem {
         this.tooltip = uri.basename();
         this.command = new OpenZennTreeViewItemCommand(this.uri);
         this.resourceUri = this.uri.underlying;
+    }
+
+    async reload(): Promise<ZennTreeItem> {
+        return BookCover.load(this.parent, this.uri);
     }
 }

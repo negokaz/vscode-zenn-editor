@@ -32,4 +32,6 @@ export abstract class ZennTreeItem extends vscode.TreeItem {
             return undefined;
         }
     }
+
+    abstract reload(): Promise<ZennTreeItem>;
 }

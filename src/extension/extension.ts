@@ -21,6 +21,7 @@ export function activate(context: vscode.ExtensionContext) {
 		vscode.commands.registerCommand('zenn-editor.create-new-article', createNewArticle()),
 		vscode.commands.registerCommand('zenn-editor.create-new-book', createNewBook()),
         vscode.commands.registerCommand('zenn-editor.open-image-uploader', openImageUploader()),
+        vscode.workspace.onDidSaveTextDocument(d => onDidSaveTextDocument(d)),
 	);
 	console.log('zenn-editor is now active');
 }
@@ -80,4 +81,8 @@ function openTreeViewItem() {
             vscode.commands.executeCommand('vscode.open', uri, { viewColumn: vscode.ViewColumn.One });
         }
     }
+}
+
+async function onDidSaveTextDocument(docuemnt: vscode.TextDocument): Promise<void> {
+    return treeViewManager.refresh(Uri.of(docuemnt.uri));
 }
