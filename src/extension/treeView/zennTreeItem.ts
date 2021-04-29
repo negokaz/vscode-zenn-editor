@@ -32,4 +32,14 @@ export abstract class ZennTreeItem extends vscode.TreeItem {
             return undefined;
         }
     }
+
+    abstract reload(): Promise<ZennTreeItem>;
+
+    /**
+     * このアイテムが変更されたときにリロードするアイテムを指定する。
+     * デフォルトは自分自身をリロード。
+     */
+    itemNeedToReload(): ZennTreeItem {
+        return this;
+    }
 }

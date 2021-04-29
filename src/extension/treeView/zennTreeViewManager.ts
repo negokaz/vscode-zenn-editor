@@ -25,6 +25,12 @@ export class ZennTeeViewManager {
             this.treeView = vscode.window.createTreeView('zenn', {
                 treeDataProvider: this.treeViewProvider,
             });
+            this.treeView.onDidExpandElement(e => {
+                e.element.collapsibleState = vscode.TreeItemCollapsibleState.Expanded;
+            });
+            this.treeView.onDidCollapseElement(e => {
+                e.element.collapsibleState = vscode.TreeItemCollapsibleState.Collapsed;
+            });
             vscode.window.onDidChangeActiveTextEditor(async event => {
                 if (event && this.treeViewProvider) {
                     const uri = Uri.of(event.document.uri);
@@ -39,9 +45,11 @@ export class ZennTeeViewManager {
         }
     }
 
-    public refresh(uri?: Uri): void {
+    public async refresh(uri?: Uri): Promise<void> {
         if (this.treeViewProvider) {
-            this.treeViewProvider.refresh(uri);
+            return this.treeViewProvider.refresh(uri);
+        } else {
+            return Promise.resolve();
         }
     }
 

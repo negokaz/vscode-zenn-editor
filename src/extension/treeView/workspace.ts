@@ -38,6 +38,10 @@ export class Workspace extends ZennTreeItem {
         return this.children;
     }
 
+    async reload(): Promise<ZennTreeItem> {
+        return new Workspace(this.workspace, this.resources);
+    }
+
     private async internalLoadChildren(): Promise<ZennTreeItem[]> {
         const items: ZennTreeItem[] = [];
         if (this.workspace.articlesDirectory) {

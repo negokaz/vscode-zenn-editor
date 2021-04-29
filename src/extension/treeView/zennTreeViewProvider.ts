@@ -24,22 +24,23 @@ export class ZennTreeViewProvider implements vscode.TreeDataProvider<ZennTreeIte
         this.resources = resources;
         this.workspaces = ZennWorkspace.findWorkspaces();
         this.rootItems = this.loadRootItems();
-        vscode.workspace.onDidCreateFiles(() => this.refresh());
-        vscode.workspace.onDidDeleteFiles(() => this.refresh());
-        vscode.workspace.onDidRenameFiles(() => this.refresh());
     }
 
     public async refresh(uri?: Uri): Promise<void> {
         if (uri) {
             const item = await this.findClosestItem(uri);
-            this._onDidChangeTreeData.fire(item);
+            this._onDidChangeTreeData.fire(item?.itemNeedToReload());
         } else {
             this._onDidChangeTreeData.fire(undefined);
         }
     }
 
-    getTreeItem(element: ZennTreeItem): vscode.TreeItem {
-        return element;
+    async getTreeItem(element: ZennTreeItem): Promise<vscode.TreeItem> {
+        // 開閉状態を維持する
+        const currentCollapsibleState = element.collapsibleState;
+        const reloadedElement = await element.reload();
+        reloadedElement.collapsibleState = currentCollapsibleState;
+        return reloadedElement;
     }
 
     async getChildren(element?: ZennTreeItem): Promise<ZennTreeItem[]> {
