@@ -7,119 +7,65 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="128"
-   height="128"
-   viewBox="0 0 33.866666 33.866668"
+   role="img"
+   viewBox="0 0 128 128"
    version="1.1"
-   id="svg8"
+   id="svg6"
    sodipodi:docname="icon.svg"
-   inkscape:version="1.0.2 (e86c870879, 2021-01-15, custom)"
    inkscape:export-filename="C:\Users\negokaz\workspace\vscode-zenn-editor\docs\images\icon.png"
    inkscape:export-xdpi="96"
-   inkscape:export-ydpi="96">
-  <defs
-     id="defs2">
-	
-	
-</defs>
-  <sodipodi:namedview
-     id="base"
-     pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1.0"
-     inkscape:pageopacity="0.0"
-     inkscape:pageshadow="2"
-     inkscape:zoom="2.8"
-     inkscape:cx="90.24801"
-     inkscape:cy="127.23848"
-     inkscape:document-units="mm"
-     inkscape:current-layer="layer1"
-     inkscape:document-rotation="0"
-     showgrid="true"
-     units="px"
-     inkscape:window-width="2471"
-     inkscape:window-height="1571"
-     inkscape:window-x="80"
-     inkscape:window-y="-9"
-     inkscape:window-maximized="1">
-    <inkscape:grid
-       type="xygrid"
-       id="grid839" />
-  </sodipodi:namedview>
+   inkscape:export-ydpi="96"
+   width="128"
+   height="128"
+   inkscape:version="1.0.2 (e86c870879, 2021-01-15, custom)">
   <metadata
-     id="metadata5">
+     id="metadata12">
     <rdf:RDF>
       <cc:Work
          rdf:about="">
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title>Zenn icon</dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
-  <g
-     inkscape:label="レイヤー 1"
-     inkscape:groupmode="layer"
-     id="layer1">
-    <circle
-       style="fill:#3ea8ff;stroke-width:0.707087;stroke-miterlimit:4;stroke-dasharray:none;fill-opacity:1"
-       id="path837"
-       cx="16.968933"
-       cy="16.968937"
-       r="16.638206" />
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:14.1111px;line-height:1.25;font-family:sans-serif;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.425667"
-       x="3.3778408"
-       y="22.668638"
-       id="text871"><tspan
-         sodipodi:role="line"
-         id="tspan869"
-         x="3.3778408"
-         y="22.668638"
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:14.1111px;font-family:'Balsamiq Sans';-inkscape-font-specification:'Balsamiq Sans Bold';fill:#ffffff;stroke-width:0.425667">Ze</tspan></text>
-    <rect
-       fill="none"
-       height="87.3125"
-       width="87.3125"
-       id="rect854"
-       x="32.995827"
-       y="-75.501518"
-       style="stroke-width:1.74625" />
-    <path
-       style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:normal;font-family:sans-serif;font-variant-ligatures:normal;font-variant-position:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-alternates:normal;font-variant-east-asian:normal;font-feature-settings:normal;font-variation-settings:normal;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:normal;word-spacing:normal;text-transform:none;writing-mode:lr-tb;direction:ltr;text-orientation:mixed;dominant-baseline:auto;baseline-shift:baseline;text-anchor:start;white-space:normal;shape-padding:0;shape-margin:0;inline-size:0;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;vector-effect:none;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.0284306;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate;stop-color:#000000"
-       d="m 32.304319,8.1562283 -0.01825,2.843e-4 h 2.56e-4 c 0,0 0,-2.843e-4 2.27e-4,0 z"
-       id="path979" />
-    <path
-       style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:normal;font-family:sans-serif;font-variant-ligatures:normal;font-variant-position:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-alternates:normal;font-variant-east-asian:normal;font-feature-settings:normal;font-variation-settings:normal;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:normal;word-spacing:normal;text-transform:none;writing-mode:lr-tb;direction:ltr;text-orientation:mixed;dominant-baseline:auto;baseline-shift:baseline;text-anchor:start;white-space:normal;shape-padding:0;shape-margin:0;inline-size:0;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;vector-effect:none;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke-width:0.0261221;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate;stop-color:#000000;stop-opacity:1;stroke:none;opacity:1"
-       d="m 29.075526,11.392519 -7.906934,7.90675 v 3.201607 h 3.201816 l 7.906515,-7.906751 z"
-       id="polygon844" />
-    <path
-       id="path837-2"
-       style="fill:#ffffff;fill-opacity:1;stroke-width:0.707086;stroke-miterlimit:4;stroke-dasharray:none"
-       d="m 31.661632,9.1617146 c -0.284181,0.06036 -0.554918,0.199976 -0.775663,0.4206457 l -0.93741,0.9368927 3.201355,3.201872 0.113686,-0.113688 A 16.638206,16.638206 0 0 0 31.661632,9.1617146 Z" />
-  </g>
-  <style
-     type="text/css"
-     id="style881">
-
-	.st0{fill:#4B4B4B;}
-
-</style>
-  <style
-     type="text/css"
-     id="style950">
-	.st0{fill:#4B4B4B;}
-</style>
-  <style
-     type="text/css"
-     id="style977">
-	.st0{fill:#4B4B4B;}
-</style>
-  <style
-     type="text/css"
-     id="style840">
-	.st0{fill:#4B4B4B;}
-</style>
+  <defs
+     id="defs10" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="2471"
+     inkscape:window-height="1571"
+     id="namedview8"
+     showgrid="true"
+     inkscape:zoom="7.65625"
+     inkscape:cx="103.17382"
+     inkscape:cy="45.201811"
+     inkscape:window-x="-9"
+     inkscape:window-y="-9"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg6">
+    <inkscape:grid
+       type="xygrid"
+       id="grid843" />
+  </sodipodi:namedview>
+  <title
+     id="title2">Zenn icon</title>
+  <circle
+     style="fill:#3ea8ff;fill-opacity:1;stroke-width:30.7889;stroke-miterlimit:10"
+     id="path18"
+     cx="64.048981"
+     cy="64.016327"
+     r="64" />
+  <path
+     d="m 26,100.54904 h 15.88899 c 0.841632,0 1.587626,-0.46864 2.056262,-1.12218 L 87.687796,27.553404 c 0.56109,-0.934087 -0.09243,-2.056261 -1.214624,-2.056261 H 71.425809 c -0.749178,0 -1.402717,0.372981 -1.775714,1.029725 L 25.254006,99.24196 c -0.280559,0.56109 0.09247,1.30708 0.745994,1.30708 z m 54.773026,-1.12218 20.655064,-33.1807 c 0.65353,-1.029726 -0.0925,-2.336805 -1.30708,-2.336805 H 85.166088 c -0.561085,0 -1.122175,0.280558 -1.402717,0.749178 L 62.547232,98.58842 c -0.56109,0.84163 0.09243,1.9638 1.122175,1.9638 h 15.23545 c 0.745995,-0.003 1.491984,-0.37616 1.868169,-1.12536 z"
+     id="path4"
+     style="fill:#ffffff;stroke-width:3.188" />
 </svg>
