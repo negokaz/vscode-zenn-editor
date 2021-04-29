@@ -10,6 +10,7 @@ vscode-zenn-editor の注目すべき変更はこのファイルで文書化さ�
 ### Changed
 
 - ロゴを変更しました [PR#17](https://github.com/negokaz/vscode-zenn-editor/pull/17)
+- 投稿コンテンツのタイトルなどの変更がリアルタイムで Explorer に反映されるようになりました [PR#18](https://github.com/negokaz/vscode-zenn-editor/pull/18)
 
 ## [0.6.0] - 2021-04-28
 [0.6.0]: https://github.com/negokaz/vscode-zenn-editor/compare/v0.5.1...v0.6.0
