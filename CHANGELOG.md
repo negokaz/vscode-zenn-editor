@@ -7,6 +7,10 @@ vscode-zenn-editor の注目すべき変更はこのファイルで文書化さ�
 ## [リリース予定]
 [リリース予定]: https://github.com/negokaz/vscode-zenn-editor/compare/v0.6.0...HEAD
 
+### Changed
+
+- ロゴを変更しました [PR#17](https://github.com/negokaz/vscode-zenn-editor/pull/17)
+
 ## [0.6.0] - 2021-04-28
 [0.6.0]: https://github.com/negokaz/vscode-zenn-editor/compare/v0.5.1...v0.6.0
 
