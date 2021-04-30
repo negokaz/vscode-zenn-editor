@@ -7,6 +7,10 @@ vscode-zenn-editor の注目すべき変更はこのファイルで文書化さ�
 ## [リリース予定]
 [リリース予定]: https://github.com/negokaz/vscode-zenn-editor/compare/v0.7.0...HEAD
 
+### Fixed
+
+- タイトルを変更したときにコンテンツ一覧での並び順が変わってしまうことがある問題を修正しました [PR#20](https://github.com/negokaz/vscode-zenn-editor/pull/20)
+
 ## [0.7.0] - 2021-04-29
 [0.7.0]: https://github.com/negokaz/vscode-zenn-editor/compare/v0.6.0...v0.7.0
 
