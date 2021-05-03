@@ -6,9 +6,10 @@
 
 ## Features
 
+- 編集中の投稿コンテンツをプレビューできます
+- 投稿コンテンツを一覧表示できます
 - 投稿コンテンツを作成できます
-- 投稿コンテンツの一覧を VS Code 上で確認できます
-- 編集中の `articles` か `books` を VS Code 上でプレビューできます
+- 画像アップロードページに素早くアクセスできます
 
 ## Requirements
 
@@ -25,23 +26,37 @@
 
 ## Usages
 
-### article の作成
-
-Zenn Contents ビュー上の紙のアイコンをクリックするか、コマンドパレットから `Zenn Editor: Create New Article` を実行します。
-
-![](docs/images/tree-view-commands.png)
-
-### book の作成
-
-Zenn Contents ビュー上の本のアイコンをクリックするか、コマンドパレットから `Zenn Editor: Create New Book` を実行します。
-
-![](docs/images/tree-view-commands.png)
-
 ### 投稿コンテンツのプレビュー
 
 投稿コンテンツの編集中に、次のプレビューボタンをクリックします。
 
 ![](docs/images/preview-button.png)
+
+### 編集する投稿コンテンツをタイトルで選択する
+
+Explorer にある「ZENN CONTENTS」ビューで投稿コンテンツの一覧を確認できます。
+
+コンテンツをクリックするとテキストエディタが開きます。
+
+<img src="docs/images/zenn-contents-explorer.png" width="300" >
+
+### Article の作成
+
+Zenn Contents ビュー上の紙のアイコンをクリックするか、コマンドパレットから `Zenn Editor: Create New Article` を実行します。
+
+![](docs/images/tree-view-commands.png)
+
+### Book の作成
+
+Zenn Contents ビュー上の本のアイコンをクリックするか、コマンドパレットから `Zenn Editor: Create New Book` を実行します。
+
+![](docs/images/tree-view-commands.png)
+
+### 画像アップロードページを開く
+
+プレビュー中に表示される次のボタンをクリックすると、Zenn の画像アップロードページが外部ブラウザで開きます。
+
+![](docs/images/CHANGELOG/status-bar-upload-image.png)
 
 ### 複数のリポジトリをひとつのウィンドウで編集する
 
@@ -51,7 +66,7 @@ Zenn には 2 つまで連携するリポジトリを設定できます。
 
 `Add Folder to Workspace` でもうひとつのローカルリポジトリを指定し、`Save Workspace As` でワークスペースを保存します。保存されたワークスペースを開くと複数のリポジトリの同時編集をいつでも再開できます。
 
-![](docs/images/create-workspace.png)
+<img src="docs/images/create-workspace.png" width="300" >
 
 ## Changelog
 
