@@ -10,7 +10,10 @@ export default class PreviewView {
         const panel = vscode.window.createWebviewPanel(
             'zenn-editor.preview',
             'Zenn Editor Preview',
-            vscode.ViewColumn.Two,
+            {
+                viewColumn: vscode.ViewColumn.Two,
+                preserveFocus: true,
+            },
             {
                 enableScripts: true,
                 localResourceRoots: [vscode.Uri.file(context.extensionPath)],
@@ -30,14 +33,16 @@ export default class PreviewView {
 
     private readonly resource: ExtensionResource;
 
+    private disposables: vscode.Disposable[] = [];
+
     private constructor(webviewPanel: vscode.WebviewPanel, resource: ExtensionResource) {
         this.resource = resource;
         this.webviewPanel = webviewPanel;
-        this.webviewPanel.webview.onDidReceiveMessage(this.receiveWebviewMessage);
-        vscode.window.onDidChangeActiveTextEditor(editor => {
-            if (editor) {
-                this.handleDidChangeActiveTextEditor(editor)
-            }
+        this.disposables.push(
+            this.webviewPanel.webview.onDidReceiveMessage(this.receiveWebviewMessage),
+        );
+        this.webviewPanel.onDidDispose(() => {
+            this.disposables.forEach(d => d.dispose());
         });
     }
 
@@ -70,9 +75,9 @@ export default class PreviewView {
         `;
     }
 
-    private async handleDidChangeActiveTextEditor(textEditor: vscode.TextEditor): Promise<void> {
-        if (textEditor.document.languageId === 'markdown') {
-            const document = Uri.of(textEditor.document.uri);
+    public async changePreviewDocument(textDocument: vscode.TextDocument): Promise<void> {
+        if (textDocument.languageId === 'markdown') {
+            const document = Uri.of(textDocument.uri);
             const workspace = document.workspaceDirectory();
             if (workspace) {
                 if (!(this.currentBackend && this.currentBackend.isProvide(document))) {

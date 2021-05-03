@@ -6,6 +6,7 @@ import { ZennTeeViewManager } from './treeView/zennTreeViewManager';
 import { ZennCli } from './zenncli/zennCli';
 import { ZennWorkspace } from './util/zennWorkspace';
 import Uri from './util/uri';
+import * as path from 'path';
 
 const treeViewManager = ZennTeeViewManager.create();
 
@@ -21,6 +22,7 @@ export function activate(context: vscode.ExtensionContext) {
 		vscode.commands.registerCommand('zenn-editor.create-new-article', createNewArticle()),
 		vscode.commands.registerCommand('zenn-editor.create-new-book', createNewBook()),
         vscode.commands.registerCommand('zenn-editor.open-image-uploader', openImageUploader()),
+        vscode.window.onDidChangeActiveTextEditor(editor => onDidChangeActiveTextEditor(editor)),
         vscode.workspace.onDidCreateFiles(() => onDidCreateFiles()),
         vscode.workspace.onDidDeleteFiles(() => onDidDeleteFiles()),
         vscode.workspace.onDidRenameFiles(() => onDidRenameFiles()),
@@ -79,9 +81,25 @@ function openImageUploader() {
 }
 
 function openTreeViewItem() {
-    return (uri?: vscode.Uri) => {
+    return async (uri?: vscode.Uri) => {
         if (uri) {
-            vscode.commands.executeCommand('vscode.open', uri, { viewColumn: vscode.ViewColumn.One });
+           try {
+                const doc = await vscode.workspace.openTextDocument(uri);
+                return await vscode.window.showTextDocument(doc, vscode.ViewColumn.One, true);
+            } catch (e) {
+                // 選択したファイルがテキストではない場合
+                vscode.commands.executeCommand('vscode.open', uri, { viewColumn: vscode.ViewColumn.One });
+            }
+        }
+    }
+}
+
+async function onDidChangeActiveTextEditor(editor: vscode.TextEditor | undefined): Promise<void> {
+    if (editor) {
+        const uri = Uri.of(editor.document.uri);
+        const item = await treeViewManager.selectItem(uri, /*attemptLimit*/1);
+        if (item) {
+            await previewViewManager.changePreviewDocument(editor.document);
         }
     }
 }

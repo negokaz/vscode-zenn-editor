@@ -29,4 +29,10 @@ export default class PreviewViewManager {
             this.imageUploaderStatusbarItem.show();
         }
     }
+
+    public async changePreviewDocument(document: vscode.TextDocument): Promise<void> {
+        if (this.previewView) {
+            this.previewView.changePreviewDocument(document);
+        }
+    }
 }
