@@ -47,13 +47,13 @@ export class ZennTeeViewManager {
         }
     }
 
-    public async selectItem(uri: Uri, attemptLimit = 10): Promise<void> {
-        return new Promise<void>((resolve) => this.innerSelectItem(uri, resolve, attemptLimit));
+    public async selectItem(uri: Uri, attemptLimit = 10): Promise<ZennTreeItem | undefined> {
+        return new Promise<ZennTreeItem | undefined>((resolve) => this.innerSelectItem(uri, resolve, attemptLimit));
     }
 
-    private async innerSelectItem(uri: Uri, resolve: () => void, remain: number): Promise<void> {
+    private async innerSelectItem(uri: Uri, resolve: (value: ZennTreeItem | undefined) => void, remain: number): Promise<void> {
         if (remain === 0) {
-            resolve();
+            resolve(undefined);
         } else {
             if (this.treeViewProvider && this.treeView) {
                 const item = await this.treeViewProvider.findItem(uri);
@@ -63,12 +63,12 @@ export class ZennTeeViewManager {
                         focus: false,
                         expand: true,
                     });
-                    resolve();
+                    resolve(item);
                 } else {
                     setTimeout(() => this.innerSelectItem(uri, resolve, remain - 1), 100/*ms*/);
                 }
             } else {
-                resolve();
+                resolve(undefined);
             }
         }
     }

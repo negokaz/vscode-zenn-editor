@@ -97,10 +97,10 @@ function openTreeViewItem() {
 async function onDidChangeActiveTextEditor(editor: vscode.TextEditor | undefined): Promise<void> {
     if (editor) {
         const uri = Uri.of(editor.document.uri);
-        await Promise.all([
-            treeViewManager.selectItem(uri, /*attemptLimit*/1),
-            previewViewManager.changePreviewDocument(editor.document),
-        ]);
+        const item = await treeViewManager.selectItem(uri, /*attemptLimit*/1);
+        if (item) {
+            await previewViewManager.changePreviewDocument(editor.document);
+        }
     }
 }
 
