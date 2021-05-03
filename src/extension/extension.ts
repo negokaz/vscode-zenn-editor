@@ -22,6 +22,7 @@ export function activate(context: vscode.ExtensionContext) {
 		vscode.commands.registerCommand('zenn-editor.create-new-article', createNewArticle()),
 		vscode.commands.registerCommand('zenn-editor.create-new-book', createNewBook()),
         vscode.commands.registerCommand('zenn-editor.open-image-uploader', openImageUploader()),
+        vscode.window.onDidChangeActiveTextEditor(editor => onDidChangeActiveTextEditor(editor)),
         vscode.workspace.onDidCreateFiles(() => onDidCreateFiles()),
         vscode.workspace.onDidDeleteFiles(() => onDidDeleteFiles()),
         vscode.workspace.onDidRenameFiles(() => onDidRenameFiles()),
@@ -90,6 +91,16 @@ function openTreeViewItem() {
                 vscode.commands.executeCommand('vscode.open', uri, { viewColumn: vscode.ViewColumn.One });
             }
         }
+    }
+}
+
+async function onDidChangeActiveTextEditor(editor: vscode.TextEditor | undefined): Promise<void> {
+    if (editor) {
+        const uri = Uri.of(editor.document.uri);
+        await Promise.all([
+            treeViewManager.selectItem(uri, /*attemptLimit*/1),
+            previewViewManager.changePreviewDocument(editor.document),
+        ]);
     }
 }
 
