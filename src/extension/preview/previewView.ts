@@ -10,7 +10,10 @@ export default class PreviewView {
         const panel = vscode.window.createWebviewPanel(
             'zenn-editor.preview',
             'Zenn Editor Preview',
-            vscode.ViewColumn.Two,
+            {
+                viewColumn: vscode.ViewColumn.Two,
+                preserveFocus: true,
+            },
             {
                 enableScripts: true,
                 localResourceRoots: [vscode.Uri.file(context.extensionPath)],
