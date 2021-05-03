@@ -10,6 +10,13 @@ vscode-zenn-editor の注目すべき変更はこのファイルで文書化さ�
 ### Fixed
 
 - タイトルを変更したときにコンテンツ一覧での並び順が変わってしまうことがある問題を修正しました [PR#20](https://github.com/negokaz/vscode-zenn-editor/pull/20)
+- 投稿コンテンツの一覧で VSCode のフィルター機能が使えない問題を修正しました [PR#21](https://github.com/negokaz/vscode-zenn-editor/pull/21)
+
+    フィルター機能については、次のページを参照してください
+
+    > Improved keyboard navigation
+    >
+    > [Visual Studio Code January 2019](https://code.visualstudio.com/updates/v1_31#_new-tree-widget)
 
 ## [0.7.0] - 2021-04-29
 [0.7.0]: https://github.com/negokaz/vscode-zenn-editor/compare/v0.6.0...v0.7.0
