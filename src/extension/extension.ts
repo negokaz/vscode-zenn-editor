@@ -6,6 +6,7 @@ import { ZennTeeViewManager } from './treeView/zennTreeViewManager';
 import { ZennCli } from './zenncli/zennCli';
 import { ZennWorkspace } from './util/zennWorkspace';
 import Uri from './util/uri';
+import * as path from 'path';
 
 const treeViewManager = ZennTeeViewManager.create();
 
@@ -79,9 +80,15 @@ function openImageUploader() {
 }
 
 function openTreeViewItem() {
-    return (uri?: vscode.Uri) => {
+    return async (uri?: vscode.Uri) => {
         if (uri) {
-            vscode.commands.executeCommand('vscode.open', uri, { viewColumn: vscode.ViewColumn.One });
+           try {
+                const doc = await vscode.workspace.openTextDocument(uri);
+                return await vscode.window.showTextDocument(doc, vscode.ViewColumn.One, true);
+            } catch (e) {
+                // 選択したファイルがテキストではない場合
+                vscode.commands.executeCommand('vscode.open', uri, { viewColumn: vscode.ViewColumn.One });
+            }
         }
     }
 }
