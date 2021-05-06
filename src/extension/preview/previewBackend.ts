@@ -12,13 +12,14 @@ export class PreviewBackend {
         const workspace = document.workspaceDirectory();
         if (workspace) {
             const documentRelativePath = this.resolveDocuemntRelativePath(document, workspace);
+            const host = 'localhost';
             const port = await getPort();
             const backendPort = await getPort();
             const zennCli = await ZennCli.create(workspace);
-            const zennPreview = await zennCli.preview(backendPort);
+            const zennPreview = zennCli.preview(backendPort);
             const zennPreviewProxyServer =
-                await ZennPreviewProxyServer.start(zennPreview.host, port, backendPort, documentRelativePath, resource);
-            return new PreviewBackend(workspace, zennPreview, zennPreviewProxyServer);
+                ZennPreviewProxyServer.start(host, port, backendPort, documentRelativePath, resource);
+            return new PreviewBackend(workspace, await zennPreview, await zennPreviewProxyServer);
         } else {
             const message = `ドキュメントのワークスペースが見つかりません: ${document.fsPath}`;
             vscode.window.showErrorMessage(message)
