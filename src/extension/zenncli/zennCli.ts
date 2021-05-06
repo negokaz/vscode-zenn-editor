@@ -41,7 +41,7 @@ export class ZennCli {
         this.zennCliPath = zennCliPath;
     }
 
-    public preview(port: number): ZennPreview {
+    public preview(port: number): Promise<ZennPreview> {
 		const cliProcess = this.spawn(['preview', '--port', port.toString()]);
         return ZennPreview.create(port, cliProcess, this.workingDirectory);
     }

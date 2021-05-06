@@ -15,9 +15,9 @@ export class PreviewBackend {
             const port = await getPort();
             const backendPort = await getPort();
             const zennCli = await ZennCli.create(workspace);
-            const zennPreview = zennCli.preview(backendPort);
+            const zennPreview = await zennCli.preview(backendPort);
             const zennPreviewProxyServer =
-                ZennPreviewProxyServer.start(zennPreview.host, port, backendPort, documentRelativePath, resource);
+                await ZennPreviewProxyServer.start(zennPreview.host, port, backendPort, documentRelativePath, resource);
             return new PreviewBackend(workspace, zennPreview, zennPreviewProxyServer);
         } else {
             const message = `ドキュメントのワークスペースが見つかりません: ${document.fsPath}`;
