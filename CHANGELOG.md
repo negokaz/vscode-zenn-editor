@@ -7,6 +7,10 @@ vscode-zenn-editor の注目すべき変更はこのファイルで文書化さ�
 ## [リリース予定]
 [リリース予定]: https://github.com/negokaz/vscode-zenn-editor/compare/v0.7.1...HEAD
 
+### Fixed
+
+- VSCode Insiders でプレビューが表示されない問題 [#23](https://github.com/negokaz/vscode-zenn-editor/issues/23) を修正 [PR#24](https://github.com/negokaz/vscode-zenn-editor/pull/24)
+
 ## [0.7.1] - 2021-05-03
 [0.7.1]: https://github.com/negokaz/vscode-zenn-editor/compare/v0.7.0...v0.7.1
 
