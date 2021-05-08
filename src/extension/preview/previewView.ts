@@ -60,6 +60,24 @@ export default class PreviewView {
         return documentUri.relativePathFrom(cwdUri).replace(/\.(md|md\.git)$/, "");
     }
 
+    private webviewLoadingHtml(): string {
+        return `
+            <html>
+                <head>
+                    <style>
+                        html {
+                            background-color: #FFF;
+                        }
+                        span {
+                            color: #666;
+                        }
+                    </style>
+                </head>
+                <body><span>Loading...</span></body>
+            </html>
+        `;
+    }
+
     private webviewHtml(previewBackend: PreviewBackend): string {
         return `
             <html>
@@ -98,6 +116,7 @@ export default class PreviewView {
                 this.currentBackend = backend;
                 this.webviewPanel.webview.html = this.webviewHtml(backend);
             } else {
+                this.webviewPanel.webview.html = this.webviewLoadingHtml();
                 const newBackend = await PreviewBackend.start(uri, this.resource);
                 this.previewBackends.set(key, newBackend);
                 this.webviewPanel.onDidDispose(() => newBackend.stop());
