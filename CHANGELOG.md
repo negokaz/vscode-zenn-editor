@@ -7,6 +7,12 @@ vscode-zenn-editor の注目すべき変更はこのファイルで文書化さ�
 ## [リリース予定]
 [リリース予定]: https://github.com/negokaz/vscode-zenn-editor/compare/v0.7.2...HEAD
 
+### Changed
+
+- `zenn-cli 0.1.86` をサポート [PR#28](https://github.com/negokaz/vscode-zenn-editor/pull/28)
+    - プレビューのサイドバーを隠す
+    - 新規作成された article を自動で開く
+
 ## [0.7.2] - 2021-05-09
 [0.7.2]: https://github.com/negokaz/vscode-zenn-editor/compare/v0.7.1...v0.7.2
 
