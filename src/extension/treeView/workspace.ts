@@ -1,6 +1,4 @@
 import * as vscode from 'vscode';
-import { promises as fs } from 'fs';
-import * as path from 'path';
 import Uri from '../util/uri';
 import ExtensionResource from '../resource/extensionResource';
 import { ZennTreeItem } from "./zennTreeItem";

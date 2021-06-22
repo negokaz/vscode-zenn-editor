@@ -57,7 +57,12 @@ function watchZennWindow(zennWindow: Window) {
 function onLoadZennWindow(zennWindow: Window) {
     // hide sidebar
     const style = document.createElement('style');
-    style.textContent = '.main-sidebar { display: none }';
+    style.textContent = `
+        /* for zenn-cli <= 0.1.85 */
+        .main-sidebar { display: none }
+        /* for zenn-cli >= 0.1.86 */
+        .layout__sidebar { display: none }
+    `;
     zennWindow.document.head.appendChild(style);
 }
 

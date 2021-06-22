@@ -15,7 +15,14 @@ export default class ZennNewArticle {
             });
             process.on('close', code => {
                 if (code === 0) {
-                    resolve(new ZennNewArticle(workingDirectory.resolve('articles', stdout.trim())));
+                    const newArticlePath = stdout.trim();
+                    if (newArticlePath.startsWith('article')) {
+                        // 0.1.86 以降
+                        resolve(new ZennNewArticle(workingDirectory.resolve(newArticlePath)));
+                    } else {
+                        // 0.1.85 以前
+                        resolve(new ZennNewArticle(workingDirectory.resolve('articles', newArticlePath)));
+                    }
                 } else {
                     reject(new Error(`Article creation failed (exit code: ${code}): ${stderr}`));
                 }

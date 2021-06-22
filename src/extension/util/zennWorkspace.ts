@@ -1,7 +1,6 @@
 import Uri from './uri';
 import * as vscode from 'vscode';
 import { promises as fs } from 'fs';
-import { worker } from 'node:cluster';
 
 export class ZennWorkspace {
 

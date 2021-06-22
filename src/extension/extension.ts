@@ -4,9 +4,7 @@ import * as vscode from 'vscode';
 import PreviewViewManager from './preview/previewViewManager';
 import { ZennTeeViewManager } from './treeView/zennTreeViewManager';
 import { ZennCli } from './zenncli/zennCli';
-import { ZennWorkspace } from './util/zennWorkspace';
 import Uri from './util/uri';
-import * as path from 'path';
 
 const treeViewManager = ZennTeeViewManager.create();
 
