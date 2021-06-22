@@ -1,5 +1,4 @@
 import * as vscode from 'vscode';
-import { promises as fs } from 'fs';
 import ExtensionResource from '../resource/extensionResource';
 import Uri from '../util/uri';
 import { Workspace } from './workspace';
