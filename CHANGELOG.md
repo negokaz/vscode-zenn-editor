@@ -7,6 +7,16 @@ vscode-zenn-editor の注目すべき変更はこのファイルで文書化さ�
 ## [リリース予定]
 [リリース予定]: https://github.com/negokaz/vscode-zenn-editor/compare/v0.8.0...HEAD
 
+### Changed
+
+- `zenn-cli 0.1.103` をサポート [PR#32](https://github.com/negokaz/vscode-zenn-editor/pull/32)
+    - Book の設定をプレビューできるように
+    - Book チャプターの URL 形式変更に対応
+
+        ⚠ この変更に伴い、zenn-cli 0.1.81 以前のバージョンでは Book チャプターのプレビューができなくなります。
+        zenn-cli のバージョンアップをお願いします。
+    - インストールされている zenn-cli が拡張の動作確認時のバージョンよりも古い場合はコンテンツのプレビュー時に警告を表示する
+
 ## [0.8.0] - 2021-06-22
 [0.8.0]: https://github.com/negokaz/vscode-zenn-editor/compare/v0.7.2...v0.8.0
 
