@@ -61,20 +61,20 @@
 			"commandPalette": [
 				{
 					"command": "zenn-editor.preview",
-					"when": "zenn-editor.activated && editorLangId == markdown"
+					"when": "zenn-editor.activated && resourceLangId in zenn-editor.previewable-language-ids && zenn-editor.active-text-editor-is-previewable"
 				}
 			],
 			"editor/title": [
 				{
 					"command": "zenn-editor.preview",
-					"when": "zenn-editor.activated && resourceLangId == markdown",
+					"when": "zenn-editor.activated && resourceLangId in zenn-editor.previewable-language-ids && zenn-editor.active-text-editor-is-previewable",
 					"group": "navigation"
 				}
 			],
 			"editor/title/context": [
 				{
 					"command": "zenn-editor.preview",
-					"when": "zenn-editor.activated && resourceLangId == markdown",
+					"when": "zenn-editor.activated && resourceLangId in zenn-editor.previewable-language-ids && zenn-editor.active-text-editor-is-previewable",
 					"group": "navigation"
 				}
 			],

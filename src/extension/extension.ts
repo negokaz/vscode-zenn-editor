@@ -5,6 +5,9 @@ import PreviewViewManager from './preview/previewViewManager';
 import { ZennTeeViewManager } from './treeView/zennTreeViewManager';
 import { ZennCli } from './zenncli/zennCli';
 import Uri from './util/uri';
+import { ZennWorkspace } from './util/zennWorkspace';
+import ZennVersion from './zenncli/zennVersion';
+import { PreviewDocument } from './preview/previewDocument';
 
 const treeViewManager = ZennTeeViewManager.create();
 
@@ -12,6 +15,7 @@ const treeViewManager = ZennTeeViewManager.create();
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
     vscode.commands.executeCommand('setContext', 'zenn-editor.activated', true);
+    vscode.commands.executeCommand('setContext', 'zenn-editor.previewable-language-ids', ['markdown', 'yaml']);
 	context.subscriptions.push(
         treeViewManager.openTreeView(context),
         vscode.commands.registerCommand('zenn-editor.refresh-tree-view', () => treeViewManager.refresh()),
@@ -26,6 +30,7 @@ export function activate(context: vscode.ExtensionContext) {
         vscode.workspace.onDidRenameFiles(() => onDidRenameFiles()),
         vscode.workspace.onDidSaveTextDocument(d => onDidSaveTextDocument(d)),
 	);
+    onDidChangeActiveTextEditor(vscode.window.activeTextEditor);
 	console.log('zenn-editor is now active');
 }
 
@@ -37,9 +42,22 @@ const previewViewManager = PreviewViewManager.create();
 function previewDocument(context: vscode.ExtensionContext) {
 	return (uri?: vscode.Uri) => {
         if (uri) {
-		    previewViewManager.openPreview(Uri.of(uri), context);
+            const documentUri = Uri.of(uri);
+            checkZennCliVersion(documentUri.workspaceDirectory());
+		    previewViewManager.openPreview(documentUri, context);
         }
 	};
+}
+
+async function checkZennCliVersion(workspace: Uri | undefined) {
+    if (workspace) {
+        const zennCli = await ZennCli.create(workspace);
+        const version = await zennCli.version();
+        const reqireVersion = ZennVersion.create("0.1.103");
+        if (version.compare(reqireVersion) < 0) {
+            vscode.window.showWarningMessage(`zenn-cli の更新を推奨します（現在のバージョン: ${version.displayVersion}）`);
+        }
+    }
 }
 
 function createNewArticle() {
@@ -95,8 +113,11 @@ function openTreeViewItem() {
 async function onDidChangeActiveTextEditor(editor: vscode.TextEditor | undefined): Promise<void> {
     if (editor) {
         const uri = Uri.of(editor.document.uri);
+        const document = PreviewDocument.create(uri);
+        vscode.commands.executeCommand('setContext', 'zenn-editor.active-text-editor-is-previewable', document.isPreviewable());
         const item = await treeViewManager.selectItem(uri, /*attemptLimit*/1);
         if (item) {
+            checkZennCliVersion(uri.workspaceDirectory());
             await previewViewManager.changePreviewDocument(editor.document);
         }
     }

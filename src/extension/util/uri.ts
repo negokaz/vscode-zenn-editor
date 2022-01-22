@@ -29,7 +29,7 @@ export default class Uri {
         return Uri.file(path.resolve.apply(null, [this.underlying.fsPath].concat(pathSegments)));
     }
 
-    public relativePathFrom(from: Uri): String {
+    public relativePathFrom(from: Uri): string {
         return this.underlying.path.substr(from.underlying.path.length + 1);
     }
 

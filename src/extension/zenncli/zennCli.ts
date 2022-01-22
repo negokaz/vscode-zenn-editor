@@ -6,6 +6,7 @@ import * as which from 'which';
 import ZennNewArticle from './zennNewArticle';
 import ZennNewBook from './zennNewBook';
 import Uri from '../util/uri';
+import ZennVersion from './zennVersion';
 
 export class ZennCli {
 
@@ -54,6 +55,11 @@ export class ZennCli {
     public createNewBook(): Promise<ZennNewBook> {
         const childProcess = this.spawn(['new:book']);
         return ZennNewBook.resolve(childProcess, this.workingDirectory);
+    }
+
+    public version(): Promise<ZennVersion> {
+        const childProcess = this.spawn(['--version']);
+        return ZennVersion.resolve(childProcess);
     }
 
     private spawn(args: string[]): childProcess.ChildProcessWithoutNullStreams {
