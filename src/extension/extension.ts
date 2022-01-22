@@ -5,6 +5,8 @@ import PreviewViewManager from './preview/previewViewManager';
 import { ZennTeeViewManager } from './treeView/zennTreeViewManager';
 import { ZennCli } from './zenncli/zennCli';
 import Uri from './util/uri';
+import { ZennWorkspace } from './util/zennWorkspace';
+import ZennVersion from './zenncli/zennVersion';
 
 const treeViewManager = ZennTeeViewManager.create();
 
@@ -37,9 +39,22 @@ const previewViewManager = PreviewViewManager.create();
 function previewDocument(context: vscode.ExtensionContext) {
 	return (uri?: vscode.Uri) => {
         if (uri) {
-		    previewViewManager.openPreview(Uri.of(uri), context);
+            const documentUri = Uri.of(uri);
+            checkZennCliVersion(documentUri.workspaceDirectory());
+		    previewViewManager.openPreview(documentUri, context);
         }
 	};
+}
+
+async function checkZennCliVersion(workspace: Uri | undefined) {
+    if (workspace) {
+        const zennCli = await ZennCli.create(workspace);
+        const version = await zennCli.version();
+        const reqireVersion = ZennVersion.create("0.1.103");
+        if (version.compare(reqireVersion) < 0) {
+            vscode.window.showWarningMessage(`zenn-cli の更新を推奨します（現在のバージョン: ${version.displayVersion}）`);
+        }
+    }
 }
 
 function createNewArticle() {
@@ -97,6 +112,7 @@ async function onDidChangeActiveTextEditor(editor: vscode.TextEditor | undefined
         const uri = Uri.of(editor.document.uri);
         const item = await treeViewManager.selectItem(uri, /*attemptLimit*/1);
         if (item) {
+            checkZennCliVersion(uri.workspaceDirectory());
             await previewViewManager.changePreviewDocument(editor.document);
         }
     }
