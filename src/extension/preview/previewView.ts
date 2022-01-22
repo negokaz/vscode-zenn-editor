@@ -91,16 +91,14 @@ export default class PreviewView {
     }
 
     public async changePreviewDocument(textDocument: vscode.TextDocument): Promise<void> {
-        if (textDocument.languageId === 'markdown') {
-            const document = Uri.of(textDocument.uri);
-            const workspace = document.workspaceDirectory();
-            if (workspace) {
-                if (!(this.currentBackend && this.currentBackend.isProvide(document))) {
-                    await this.open(document);
-                }
-                const documentRelativePath = PreviewDocument.create(workspace, document).urlPath();
-                this.webviewPanel.webview.postMessage({ command: 'change_path', relativePath: documentRelativePath });
+        const document = Uri.of(textDocument.uri);
+        const previewDocument = PreviewDocument.create(document);
+        if (previewDocument.isPreviewable()) {
+            if (!(this.currentBackend && this.currentBackend.isProvide(document))) {
+                await this.open(document);
             }
+            const documentRelativePath = previewDocument.urlPath();
+            this.webviewPanel.webview.postMessage({ command: 'change_path', relativePath: documentRelativePath });
         }
     }
 
@@ -114,7 +112,7 @@ export default class PreviewView {
                 this.webviewPanel.webview.html = this.webviewHtml(backend);
             } else {
                 this.webviewPanel.webview.html = this.webviewLoadingHtml();
-                const document = PreviewDocument.create(workspace, uri);
+                const document = PreviewDocument.create(uri);
                 const newBackend = await PreviewBackend.start(document, this.resource);
                 this.previewBackends.set(key, newBackend);
                 this.webviewPanel.onDidDispose(() => newBackend.stop());
