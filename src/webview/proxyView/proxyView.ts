@@ -62,6 +62,7 @@ function onLoadZennWindow(zennWindow: Window) {
         .main-sidebar { display: none }
         /* for zenn-cli >= 0.1.86 */
         .layout__sidebar { display: none }
+        .chapter-header__book { display: none }
     `;
     zennWindow.document.head.appendChild(style);
 }

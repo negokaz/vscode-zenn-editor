@@ -5,13 +5,14 @@ import Uri from '../util/uri';
 import * as getPort from 'get-port';
 import { ZennCli } from "../zenncli/zennCli";
 import ExtensionResource from "../resource/extensionResource";
+import { PreviewDocument } from "./previewDocument";
 
 export class PreviewBackend {
 
-    public static async start(document: Uri, resource: ExtensionResource) {
-        const workspace = document.workspaceDirectory();
+    public static async start(document: PreviewDocument, resource: ExtensionResource) {
+        const workspace = document.uri().workspaceDirectory();
         if (workspace) {
-            const documentRelativePath = this.resolveDocuemntRelativePath(document, workspace);
+            const documentRelativePath = document.urlPath();
             const host = 'localhost';
             const port = await getPort();
             const backendPort = await getPort();
@@ -21,14 +22,10 @@ export class PreviewBackend {
                 ZennPreviewProxyServer.start(host, port, backendPort, documentRelativePath, resource);
             return new PreviewBackend(workspace, await zennPreview, await zennPreviewProxyServer);
         } else {
-            const message = `ドキュメントのワークスペースが見つかりません: ${document.fsPath}`;
+            const message = `ドキュメントのワークスペースが見つかりません: ${document.uri().fsPath}`;
             vscode.window.showErrorMessage(message)
             return Promise.reject(message);
         }
-    }
-
-    private static resolveDocuemntRelativePath(documentUri: Uri, cwdUri: Uri): string {
-        return documentUri.relativePathFrom(cwdUri).replace(/\.(md|md\.git)$/, "");
     }
 
     public readonly workspace: Uri;

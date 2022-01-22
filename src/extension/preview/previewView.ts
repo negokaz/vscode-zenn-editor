@@ -2,6 +2,7 @@ import * as vscode from "vscode";
 import { PreviewBackend } from './previewBackend';
 import ExtensionResource from "../resource/extensionResource";
 import Uri from '../util/uri';
+import { PreviewDocument } from "./previewDocument";
 
 export default class PreviewView {
 
@@ -56,10 +57,6 @@ export default class PreviewView {
         }
     }
 
-    private static resolveDocuemntRelativePath(documentUri: Uri, cwdUri: Uri): string {
-        return documentUri.relativePathFrom(cwdUri).replace(/\.(md|md\.git)$/, "");
-    }
-
     private webviewLoadingHtml(): string {
         return `
             <html>
@@ -101,7 +98,7 @@ export default class PreviewView {
                 if (!(this.currentBackend && this.currentBackend.isProvide(document))) {
                     await this.open(document);
                 }
-                const documentRelativePath = PreviewView.resolveDocuemntRelativePath(document, workspace);
+                const documentRelativePath = PreviewDocument.create(workspace, document).urlPath();
                 this.webviewPanel.webview.postMessage({ command: 'change_path', relativePath: documentRelativePath });
             }
         }
@@ -117,7 +114,8 @@ export default class PreviewView {
                 this.webviewPanel.webview.html = this.webviewHtml(backend);
             } else {
                 this.webviewPanel.webview.html = this.webviewLoadingHtml();
-                const newBackend = await PreviewBackend.start(uri, this.resource);
+                const document = PreviewDocument.create(workspace, uri);
+                const newBackend = await PreviewBackend.start(document, this.resource);
                 this.previewBackends.set(key, newBackend);
                 this.webviewPanel.onDidDispose(() => newBackend.stop());
                 this.currentBackend = newBackend;
