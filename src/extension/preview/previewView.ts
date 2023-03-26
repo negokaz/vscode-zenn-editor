@@ -79,7 +79,7 @@ export default class PreviewView {
         return `
             <html>
                 <head>
-                    <script src="${this.resource.uri('dist', 'webview.js')}"></script>
+                    <script src="${this.webviewPanel.webview.asWebviewUri(this.resource.uri('dist', 'webview.js'))}"></script>
                 </head>
                 <body>
                     <div>

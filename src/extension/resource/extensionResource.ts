@@ -13,6 +13,6 @@ export default class ExtensionResource {
         const onDiskPath = vscode.Uri.file(
             path.join(this.context.extensionPath, path.join(...pathElements))
         );
-        return onDiskPath.with({ scheme: 'vscode-resource' });
+        return onDiskPath;
     }
 }
