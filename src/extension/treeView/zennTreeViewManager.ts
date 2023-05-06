@@ -31,6 +31,12 @@ export class ZennTeeViewManager {
             this.treeView.onDidCollapseElement(e => {
                 e.element.collapsibleState = vscode.TreeItemCollapsibleState.Collapsed;
             });
+            this.treeView.onDidChangeVisibility(e => {
+                if (e.visible && vscode.window.activeTextEditor) {
+                    const uri = Uri.of(vscode.window.activeTextEditor.document.uri);
+                    this.selectItem(uri);
+                }
+            });
             if (vscode.window.activeTextEditor) {
                 const uri = Uri.of(vscode.window.activeTextEditor.document.uri);
                 this.selectItem(uri);
@@ -58,11 +64,13 @@ export class ZennTeeViewManager {
             if (this.treeViewProvider && this.treeView) {
                 const item = await this.treeViewProvider.findItem(uri);
                 if (item) {
-                    this.treeView.reveal(item, {
-                        select: true,
-                        focus: false,
-                        expand: true,
-                    });
+                    if (this.treeView.visible) {
+                        this.treeView.reveal(item, {
+                            select: true,
+                            focus: false,
+                            expand: true,
+                        });
+                    }
                     resolve(item);
                 } else {
                     setTimeout(() => this.innerSelectItem(uri, resolve, remain - 1), 100/*ms*/);
