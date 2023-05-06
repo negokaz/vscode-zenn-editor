@@ -7,6 +7,18 @@ vscode-zenn-editor の注目すべき変更はこのファイルで文書化さ�
 ## [リリース予定]
 [リリース予定]: https://github.com/negokaz/vscode-zenn-editor/compare/v0.9.0...HEAD
 
+## [0.9.1] - 2023-05-06
+[0.9.1]: https://github.com/negokaz/vscode-zenn-editor/compare/v0.9.0...v0.9.1
+
+### Changed
+
+- `zenn-cli 0.1.143` をサポート [PR#38](https://github.com/negokaz/vscode-zenn-editor/pull/38)
+
+### Fixed
+
+- Devcontainer を利用している場合にプレビューできない問題を修正 [#34](https://github.com/negokaz/vscode-zenn-editor/issues/34)
+- 表示ファイルを切り替えるとサイドバーが開いてしまう問題を修正 [#35](https://github.com/negokaz/vscode-zenn-editor/issues/35)
+
 ## [0.9.0] - 2022-01-22
 [0.9.0]: https://github.com/negokaz/vscode-zenn-editor/compare/v0.8.0...v0.9.0
 
