@@ -53,7 +53,7 @@ async function checkZennCliVersion(workspace: Uri | undefined) {
     if (workspace) {
         const zennCli = await ZennCli.create(workspace);
         const version = await zennCli.version();
-        const reqireVersion = ZennVersion.create("0.1.103");
+        const reqireVersion = ZennVersion.create("0.1.143");
         if (version.compare(reqireVersion) < 0) {
             vscode.window.showWarningMessage(`zenn-cli の更新を推奨します（現在のバージョン: ${version.displayVersion}）`);
         }

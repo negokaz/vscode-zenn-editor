@@ -86,11 +86,10 @@ function onChangeZennWindow(zennWindow: Window) {
         }
     });
     // handle link card click events
-    zennWindow.document.querySelectorAll<HTMLIFrameElement>('.embed-zenn-link > iframe').forEach(e => {
-        const iframeSrc = new window.URL(e.src);
-        const urlParam = iframeSrc.searchParams.get('url');
-        if (urlParam && !e.dataset[listenerAddedMarkDataName]) {
-            const linkUrl = decodeURIComponent(urlParam);
+    zennWindow.document.querySelectorAll<HTMLIFrameElement>('.zenn-embedded-card > iframe').forEach(e => {
+        const contentUrl = e.dataset.content;
+        if (contentUrl && !e.dataset[listenerAddedMarkDataName]) {
+            const linkUrl = decodeURIComponent(contentUrl);
             // How to detect a click event on a cross domain iframe
             // https://gist.github.com/jaydson/1780598
             let iframeMouseOver = false;
