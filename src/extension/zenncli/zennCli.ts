@@ -63,7 +63,12 @@ export class ZennCli {
     }
 
     private spawn(args: string[]): childProcess.ChildProcessWithoutNullStreams {
-		const zennProcess =  childProcess.spawn(this.zennCliPath.fsPath(), args, { cwd: this.workingDirectory.fsPath() });
+		const zennProcess =  childProcess.spawn(this.zennCliPath.fsPath(), args, {
+            cwd: this.workingDirectory.fsPath(),
+            // Windows 環境で発生するエラー「A system error occurred (spawn EINVAL)」を回避する
+            // see: https://github.com/negokaz/vscode-zenn-editor/issues/41
+            shell: process.platform === 'win32',
+        });
         zennProcess.on('error', err => {
             vscode.window.showErrorMessage(`zenn-cli の起動に失敗しました: ${err.message}`);
         });

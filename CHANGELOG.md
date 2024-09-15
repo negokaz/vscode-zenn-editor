@@ -5,7 +5,14 @@ vscode-zenn-editor の注目すべき変更はこのファイルで文書化さ�
 このファイルの書き方に関する推奨事項については、[Keep a Changelog](http://keepachangelog.com/) を確認してください。
 
 ## [リリース予定]
-[リリース予定]: https://github.com/negokaz/vscode-zenn-editor/compare/v0.9.0...HEAD
+[リリース予定]: https://github.com/negokaz/vscode-zenn-editor/compare/v0.9.2...HEAD
+
+## [0.9.2] - 2024-09-15
+[0.9.2]: https://github.com/negokaz/vscode-zenn-editor/compare/v0.9.1...v0.9.2
+
+### Fixed
+
+- Windows 環境で `A system error occurred (spawn EINVAL)` が発生する問題を修正 [#41](https://github.com/negokaz/vscode-zenn-editor/issues/41)
 
 ## [0.9.1] - 2023-05-06
 [0.9.1]: https://github.com/negokaz/vscode-zenn-editor/compare/v0.9.0...v0.9.1
